@@ -23,11 +23,11 @@ VALUES (100, 100002),
        (300, 100002),
        (400, 100003);
 
-INSERT INTO users (name, email, password)
+INSERT INTO USERS (name, email, password)
 VALUES ('User', 'user@yandex.ru', 'password'),
        ('Admin', 'admin@gmail.com', 'admin');
 
-INSERT INTO user_roles (role, user_id)
+INSERT INTO USER_ROLES (role, user_id)
 VALUES ('USER', 100007),
        ('ADMIN', 100008),
        ('USER', 100008);
