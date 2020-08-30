@@ -1,5 +1,5 @@
 DELETE
-FROM MEALS;
+FROM DISHES;
 DELETE
 FROM USER_ROLES;
 DELETE
@@ -18,7 +18,7 @@ INSERT INTO LUNCHES(lunch_date, restaurant_id)
 VALUES ('2020-01-30', 100000),
        ('2020-01-30', 100001);
 
-INSERT INTO MEALS(price, lunch_id)
+INSERT INTO DISHES(price, lunch_id)
 VALUES (100, 100002),
        (300, 100002),
        (400, 100003);
