@@ -60,6 +60,13 @@
             <artifactId>spring-context</artifactId>
         </dependency>
 
+        <!-- HSQLDB-->
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>2.5.1</version>
+        </dependency>
+
         <!--Web-->
         <dependency>
             <groupId>org.springframework</groupId>
