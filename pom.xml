@@ -89,6 +89,14 @@
             <version>2.5.1</version>
         </dependency>
 
+        <!-- Tomcat Pool-->
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-jdbc</artifactId>
+            <version>${tomcat.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!--Web-->
         <dependency>
             <groupId>org.springframework</groupId>

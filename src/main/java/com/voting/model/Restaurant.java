@@ -9,7 +9,8 @@ import javax.persistence.Table;
 public class Restaurant extends AbstractBaseEntity {
 
     @Column(name = "name")
-    String name;
+    private String name;
+
 
     public String getName() {
         return name;
