@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import javax.annotation.PostConstruct;
 
 @SpringJUnitWebConfig(locations = {
-        "classpath:spring/spring-mvc.xml"
+        "classpath:spring/spring-mvc.xml", "classpath:spring/spring-db.xml"
 })
 public class FirstTest {
 
