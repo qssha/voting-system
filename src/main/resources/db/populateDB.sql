@@ -28,9 +28,9 @@ VALUES (100004, 100002),
        (100005, 100002),
        (100006, 100003);
 
-INSERT INTO USERS (name, email, password)
-VALUES ('User', 'user@yandex.ru', 'password'),
-       ('Admin', 'admin@gmail.com', 'admin');
+INSERT INTO USERS (name, email, password, LUNCH_ID)
+VALUES ('User', 'user@yandex.ru', 'password', 100002),
+       ('Admin', 'admin@gmail.com', 'admin', 100003);
 
 INSERT INTO USER_ROLES (role, user_id)
 VALUES ('USER', 100007),

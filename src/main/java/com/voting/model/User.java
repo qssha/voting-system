@@ -89,4 +89,17 @@ public class User extends AbstractBaseEntity {
     public void setLunch(Lunch lunch) {
         this.lunch = lunch;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", enabled=" + enabled +
+                ", registered=" + registered +
+                ", roles=" + roles +
+                ", lastVoteTime=" + lastVoteTime +
+                ", lunch=" + lunch +
+                '}';
+    }
 }

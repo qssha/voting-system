@@ -28,4 +28,11 @@ public class Restaurant extends AbstractBaseEntity {
     public void setLunches(List<Lunch> lunches) {
         this.lunches = lunches;
     }
+
+    @Override
+    public String toString() {
+        return "Restaurant{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
