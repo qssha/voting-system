@@ -1,8 +1,7 @@
 package com.voting.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "restaurants")
@@ -11,6 +10,8 @@ public class Restaurant extends AbstractBaseEntity {
     @Column(name = "name")
     private String name;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
+    private List<Lunch> lunches;
 
     public String getName() {
         return name;
@@ -18,5 +19,13 @@ public class Restaurant extends AbstractBaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Lunch> getLunches() {
+        return lunches;
+    }
+
+    public void setLunches(List<Lunch> lunches) {
+        this.lunches = lunches;
     }
 }

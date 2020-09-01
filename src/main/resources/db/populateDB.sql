@@ -18,10 +18,15 @@ INSERT INTO LUNCHES(lunch_date, restaurant_id)
 VALUES ('2020-01-30', 100000),
        ('2020-01-30', 100001);
 
-INSERT INTO DISHES(price, lunch_id)
-VALUES (100, 100002),
-       (300, 100002),
-       (400, 100003);
+INSERT INTO DISHES(name, price)
+VALUES ('first', 100),
+       ('second', 300),
+       ('third', 400);
+
+INSERT INTO DISHES_LUNCHES(dish_id, lunch_id)
+VALUES (100004, 100002),
+       (100005, 100002),
+       (100006, 100003);
 
 INSERT INTO USERS (name, email, password)
 VALUES ('User', 'user@yandex.ru', 'password'),
