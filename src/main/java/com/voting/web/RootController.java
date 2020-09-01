@@ -6,6 +6,7 @@ import com.voting.model.Restaurant;
 import com.voting.repository.DishCrudRepository;
 import com.voting.repository.LunchCrudRepository;
 import com.voting.repository.RestaurantCrudRepository;
+import com.voting.repository.UserCrudRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,20 +30,16 @@ public class RootController {
     @Autowired
     DishCrudRepository dishCrudRepository;
 
+    @Autowired
+    UserCrudRepository userCrudRepository;
+
     @GetMapping("/")
     public @ResponseBody String root() {
-        dishCrudRepository.save(new Dish(
-                "Fourth", 1000, List.of(lunchCrudRepository.getOne(100002))));
+        System.out.println(dishCrudRepository.findAll());
+        dishCrudRepository.deleteById(100005);
+        System.out.println(dishCrudRepository.findAll());
 
-
-        for (Lunch lunch :
-                lunchCrudRepository.findAll()) {
-            System.out.println(lunch.getRestaurant());
-            System.out.println(lunch.getLunch_date());
-            System.out.println(lunch.getDishes());
-        }
-
-        System.out.println(restaurantCrudRepository.findAll());
+        System.out.println(userCrudRepository.findAll());
 
         log.debug("FIRST DEBUG");
         return "OK\n";

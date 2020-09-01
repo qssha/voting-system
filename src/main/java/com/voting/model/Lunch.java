@@ -21,6 +21,9 @@ public class Lunch extends AbstractBaseEntity {
     @ManyToMany(mappedBy = "lunches", fetch = FetchType.EAGER)
     List<Dish> dishes;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "lunch")
+    List<User> users;
+
     public LocalDateTime getLunch_date() {
         return lunch_date;
     }
@@ -51,5 +54,13 @@ public class Lunch extends AbstractBaseEntity {
 
     public void setRating(Integer rating) {
         this.rating = rating;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
