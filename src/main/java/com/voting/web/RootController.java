@@ -6,13 +6,13 @@ import com.voting.repository.RestaurantCrudRepository;
 import com.voting.repository.UserCrudRepository;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-@Controller
+@RestController
 public class RootController {
     private final static Logger log = getLogger(RootController.class);
 
