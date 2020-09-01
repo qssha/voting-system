@@ -10,14 +10,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import static org.hamcrest.CoreMatchers.is;
+import javax.annotation.PostConstruct;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import javax.annotation.PostConstruct;
 
 @SpringJUnitWebConfig(locations = {
         "classpath:spring/spring-mvc.xml", "classpath:spring/spring-db.xml"

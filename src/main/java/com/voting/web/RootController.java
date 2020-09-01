@@ -1,8 +1,5 @@
 package com.voting.web;
 
-import com.voting.model.Dish;
-import com.voting.model.Lunch;
-import com.voting.model.Restaurant;
 import com.voting.repository.DishCrudRepository;
 import com.voting.repository.LunchCrudRepository;
 import com.voting.repository.RestaurantCrudRepository;
@@ -12,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
