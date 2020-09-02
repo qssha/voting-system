@@ -13,6 +13,13 @@ public abstract class AbstractBaseEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     Integer id;
 
+    public AbstractBaseEntity() {
+    }
+
+    public AbstractBaseEntity(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

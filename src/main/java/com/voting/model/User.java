@@ -1,12 +1,19 @@
 package com.voting.model;
 
+import org.springframework.util.CollectionUtils;
+
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Date;
+import java.util.EnumSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class User extends AbstractBaseEntity {
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "email")
     private String email;
@@ -30,9 +37,29 @@ public class User extends AbstractBaseEntity {
     @Column(name = "last_vote_datetime")
     private Date lastVoteTime;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lunch_id")
     private Lunch lunch;
+
+    public User() {
+    }
+
+    public User(Integer id, String name, String email, String password, Date registered, Collection<Role> roles) {
+        super(id);
+
+        this.email = email;
+        this.password = password;
+        this.registered = registered;
+        setRoles(roles);
+    }
+
+    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
+        this(id, name, email, password, new Date(), EnumSet.of(role, roles));
+    }
+
+    public User(User user) {
+        this(user.getId(), user.getName(), user.getEmail(), user.getPassword(), user.getRegistered(), user.getRoles());
+    }
 
     public String getEmail() {
         return email;
@@ -70,8 +97,8 @@ public class User extends AbstractBaseEntity {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+    public void setRoles(Collection<Role> roles) {
+        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 
     public Date getLastVoteTime() {
@@ -88,6 +115,14 @@ public class User extends AbstractBaseEntity {
 
     public void setLunch(Lunch lunch) {
         this.lunch = lunch;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override

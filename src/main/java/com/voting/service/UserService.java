@@ -5,6 +5,7 @@ import com.voting.repository.UserCrudRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,8 +24,8 @@ public class UserService {
         userCrudRepository.deleteById(id);
     }
 
-    public User get(int id) {
-        return userCrudRepository.getOne(id);
+    public Optional<User> get(int id) {
+        return userCrudRepository.findById(id);
     }
 
     public List<User> getAll() {
