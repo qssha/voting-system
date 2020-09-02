@@ -46,7 +46,7 @@ public class User extends AbstractBaseEntity {
 
     public User(Integer id, String name, String email, String password, Date registered, Collection<Role> roles) {
         super(id);
-
+        this.name = name;
         this.email = email;
         this.password = password;
         this.registered = registered;
@@ -123,18 +123,5 @@ public class User extends AbstractBaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", password='" + password + '\'' +
-                ", enabled=" + enabled +
-                ", registered=" + registered +
-                ", roles=" + roles +
-                ", lastVoteTime=" + lastVoteTime +
-                ", lunch=" + lunch +
-                '}';
     }
 }

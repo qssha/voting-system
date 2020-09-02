@@ -11,28 +11,42 @@ FROM RESTAURANTS;
 ALTER SEQUENCE GLOBAL_SEQ RESTART WITH 100000;
 
 INSERT INTO RESTAURANTS(name)
-VALUES ('First'),
-       ('Second');
+VALUES ('First restaurant'),
+       ('Second restaurant'),
+       ('Third restaurant');
 
 INSERT INTO LUNCHES(lunch_date, restaurant_id)
-VALUES ('2020-01-30', 100000),
-       ('2020-01-30', 100001);
+VALUES ('2020-08-30', 100000),
+       ('2020-08-30', 100001),
+       ('2020-08-30', 100002);
 
 INSERT INTO DISHES(name, price)
-VALUES ('first', 100),
-       ('second', 300),
-       ('third', 400);
+VALUES ('Eggs', 100),
+       ('Steak', 1500),
+       ('Cheesecake', 700),
+       ('Borscht', 700),
+       ('Spaghetti', 300),
+       ('Apple pie', 700),
+       ('Solyanka', 900),
+       ('Pelmeni', 600),
+       ('Pancakes', 500);
 
 INSERT INTO DISHES_LUNCHES(dish_id, lunch_id)
-VALUES (100004, 100002),
-       (100005, 100002),
-       (100006, 100003);
+VALUES (100006, 100003),
+       (100007, 100003),
+       (100008, 100003),
+       (100009, 100004),
+       (100010, 100004),
+       (100011, 100004),
+       (100012, 100005),
+       (100013, 100005),
+       (100014, 100005);
 
 INSERT INTO USERS (name, email, password, LUNCH_ID)
-VALUES ('User', 'user@yandex.ru', 'password', 100002),
-       ('Admin', 'admin@gmail.com', 'admin', 100003);
+VALUES ('User', 'user@yandex.ru', 'password', 100003),
+       ('Admin', 'admin@gmail.com', 'admin', 100004);
 
 INSERT INTO USER_ROLES (role, user_id)
-VALUES ('USER', 100007),
-       ('ADMIN', 100008),
-       ('USER', 100008);
+VALUES ('USER', 100015),
+       ('USER', 100016),
+       ('ADMIN', 100016);

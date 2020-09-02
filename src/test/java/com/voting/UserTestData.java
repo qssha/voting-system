@@ -11,8 +11,9 @@ import static com.voting.model.AbstractBaseEntity.START_SEQ;
 public class UserTestData {
     public static TestMatcher<User> USER_MATCHER = TestMatcher.usingFieldsComparator(User.class, "registered", "lunch", "lastVoteTime");
 
-    public static final int USER_ID = START_SEQ + 7;
-    public static final int ADMIN_ID = START_SEQ + 8;
+    public static final int NOT_FOUND = 10;
+    public static final int USER_ID = START_SEQ + 15;
+    public static final int ADMIN_ID = START_SEQ + 16;
 
     public static final User USER = new User(USER_ID, "User", "user@yandex.ru", "password", Role.USER);
     public static final User ADMIN = new User(ADMIN_ID, "Admin", "admin@gmail.com", "admin", Role.ADMIN, Role.USER);
