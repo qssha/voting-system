@@ -1,7 +1,5 @@
 package com.voting;
 
-import org.springframework.test.web.servlet.ResultMatcher;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;

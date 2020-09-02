@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.Optional;
 
 import static com.voting.util.ValidationUtil.checkNotFound;
 import static com.voting.util.ValidationUtil.checkNotFoundWithId;
