@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
+@Transactional(readOnly = true)
 public interface LunchCrudRepository extends JpaRepository<Lunch, Integer> {
     @Transactional
     @Modifying

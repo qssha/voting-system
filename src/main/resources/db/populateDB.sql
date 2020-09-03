@@ -17,8 +17,8 @@ VALUES ('First restaurant'),
 
 INSERT INTO LUNCHES(lunch_date, restaurant_id)
 VALUES ('2020-08-30', 100000),
-       ('2020-08-30', 100001),
-       ('2020-08-30', 100002);
+       ('2020-08-31', 100001),
+       ('2020-08-31', 100002);
 
 INSERT INTO DISHES(name, price)
 VALUES ('Eggs', 100),

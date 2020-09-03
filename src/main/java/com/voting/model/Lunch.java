@@ -1,6 +1,7 @@
 package com.voting.model;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,10 +10,10 @@ import java.util.List;
 public class Lunch extends AbstractBaseEntity {
 
     @Column(name = "lunch_date")
-    private LocalDateTime lunch_date;
+    private LocalDate lunch_date;
 
     @Column(name = "rating")
-    private Integer rating;
+    private Integer rating = 0;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id")
@@ -24,11 +25,29 @@ public class Lunch extends AbstractBaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lunch")
     List<User> users;
 
-    public LocalDateTime getLunch_date() {
+    public Lunch() {
+    }
+
+    public Lunch(Integer id, LocalDate lunch_date, Restaurant restaurant) {
+        super(id);
+        this.lunch_date = lunch_date;
+        this.restaurant = restaurant;
+    }
+
+    public Lunch(Lunch lunch) {
+        this.id = lunch.getId();
+        this.lunch_date = lunch.getLunch_date();
+        this.rating = lunch.getRating();
+        this.restaurant = lunch.getRestaurant();
+        this.dishes = lunch.getDishes();
+        this.users = lunch.getUsers();
+    }
+
+    public LocalDate getLunch_date() {
         return lunch_date;
     }
 
-    public void setLunch_date(LocalDateTime lunch_date) {
+    public void setLunch_date(LocalDate lunch_date) {
         this.lunch_date = lunch_date;
     }
 

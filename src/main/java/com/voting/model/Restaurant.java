@@ -13,6 +13,20 @@ public class Restaurant extends AbstractBaseEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")
     private List<Lunch> lunches;
 
+    public Restaurant() {
+    }
+
+    public Restaurant(Integer id, String name) {
+        super(id);
+        this.name = name;
+    }
+
+    public Restaurant(Restaurant restaurant) {
+        this.id = restaurant.getId();
+        this.name = restaurant.name;
+        this.lunches = restaurant.getLunches();
+    }
+
     public String getName() {
         return name;
     }

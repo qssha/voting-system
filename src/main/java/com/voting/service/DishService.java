@@ -2,6 +2,7 @@ package com.voting.service;
 
 import com.voting.model.Dish;
 import com.voting.repository.DishCrudRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -32,7 +33,7 @@ public class DishService {
     }
 
     public List<Dish> getAll() {
-        return dishCrudRepository.findAll();
+        return dishCrudRepository.findAll(Sort.by(Sort.Direction.ASC, "name"));
     }
 
     public void update(Dish dish) {
