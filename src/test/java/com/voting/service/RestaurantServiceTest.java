@@ -1,5 +1,6 @@
 package com.voting.service;
 
+import com.voting.model.Lunch;
 import com.voting.model.Restaurant;
 import com.voting.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
@@ -8,6 +9,8 @@ import org.springframework.dao.DataAccessException;
 
 import java.util.List;
 
+import static com.voting.LunchTestData.FIRST_LUNCH;
+import static com.voting.LunchTestData.LUNCH_MATCHER;
 import static com.voting.RestaurantTestData.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -65,5 +68,12 @@ public class RestaurantServiceTest extends AbstractServiceTest {
     void getAll() throws Exception {
         List<Restaurant> all = restaurantService.getAll();
         RESTAURANT_MATCHER.assertMatch(all, FIRST_RESTAURANT, SECOND_RESTAURANT, THIRD_RESTAURANT);
+    }
+
+    @Test
+    void getWithLunches() throws Exception {
+        Restaurant restaurant = restaurantService.getWithLunches(FIRST_RESTAURANT_ID);
+        List<Lunch> lunches = restaurant.getLunches();
+        LUNCH_MATCHER.assertMatch(lunches, FIRST_LUNCH);
     }
 }

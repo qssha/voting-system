@@ -41,8 +41,7 @@ public class RestaurantService {
         checkNotFoundWithId(restaurantCrudRepository.save(restaurant), restaurant.getId());
     }
 
-    public Restaurant getWithLunches() {
-        //TODO
-        return null;
+    public Restaurant getWithLunches(int id) {
+        return checkNotFoundWithId(restaurantCrudRepository.getWithLunches(id), id);
     }
 }
