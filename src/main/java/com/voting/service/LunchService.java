@@ -2,9 +2,11 @@ package com.voting.service;
 
 import com.voting.model.Lunch;
 import com.voting.repository.LunchCrudRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.voting.util.ValidationUtil.checkNotFoundWithId;
@@ -32,11 +34,19 @@ public class LunchService {
     }
 
     public List<Lunch> getAll() {
-        return lunchCrudRepository.findAll();
+        return lunchCrudRepository.findAll(Sort.by(Sort.Direction.DESC, "lunchDate"));
     }
 
     public void update(Lunch lunch) {
         Assert.notNull(lunch, "lunch must be not null");
         checkNotFoundWithId(lunchCrudRepository.save(lunch), lunch.getId());
+    }
+
+    public List<Lunch> getByDate(LocalDate date) {
+        return lunchCrudRepository.getByLunchDate(date);
+    }
+
+    public List<Lunch> getBetweenDates(LocalDate startDate, LocalDate endDate) {
+        return lunchCrudRepository.getBetweenDates(startDate, endDate);
     }
 }

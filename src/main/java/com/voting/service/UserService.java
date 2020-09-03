@@ -1,9 +1,11 @@
 package com.voting.service;
 
+import com.voting.model.Lunch;
 import com.voting.model.User;
 import com.voting.repository.UserCrudRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.util.List;
@@ -45,5 +47,15 @@ public class UserService {
     public User getByEmail(String email) {
         Assert.notNull(email, "email must not be null");
         return checkNotFound(userCrudRepository.getByEmail(email), "email=" + email);
+    }
+
+    public User getWithLunch(int id) {
+        //TODO
+        return null;
+    }
+
+    @Transactional
+    public void vote(int id, Lunch lunch) {
+        //TODO
     }
 }

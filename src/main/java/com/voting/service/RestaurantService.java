@@ -40,4 +40,9 @@ public class RestaurantService {
         Assert.notNull(restaurant, "restaurant must be not null");
         checkNotFoundWithId(restaurantCrudRepository.save(restaurant), restaurant.getId());
     }
+
+    public Restaurant getWithLunches() {
+        //TODO
+        return null;
+    }
 }

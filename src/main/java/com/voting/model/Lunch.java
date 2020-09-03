@@ -2,7 +2,6 @@ package com.voting.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -10,7 +9,7 @@ import java.util.List;
 public class Lunch extends AbstractBaseEntity {
 
     @Column(name = "lunch_date")
-    private LocalDate lunch_date;
+    private LocalDate lunchDate;
 
     @Column(name = "rating")
     private Integer rating = 0;
@@ -28,27 +27,27 @@ public class Lunch extends AbstractBaseEntity {
     public Lunch() {
     }
 
-    public Lunch(Integer id, LocalDate lunch_date, Restaurant restaurant) {
+    public Lunch(Integer id, LocalDate lunchDate, Restaurant restaurant) {
         super(id);
-        this.lunch_date = lunch_date;
+        this.lunchDate = lunchDate;
         this.restaurant = restaurant;
     }
 
     public Lunch(Lunch lunch) {
         this.id = lunch.getId();
-        this.lunch_date = lunch.getLunch_date();
+        this.lunchDate = lunch.getLunchDate();
         this.rating = lunch.getRating();
         this.restaurant = lunch.getRestaurant();
         this.dishes = lunch.getDishes();
         this.users = lunch.getUsers();
     }
 
-    public LocalDate getLunch_date() {
-        return lunch_date;
+    public LocalDate getLunchDate() {
+        return lunchDate;
     }
 
-    public void setLunch_date(LocalDate lunch_date) {
-        this.lunch_date = lunch_date;
+    public void setLunchDate(LocalDate lunch_date) {
+        this.lunchDate = lunch_date;
     }
 
     public Restaurant getRestaurant() {
@@ -86,7 +85,7 @@ public class Lunch extends AbstractBaseEntity {
     @Override
     public String toString() {
         return "Lunch{" +
-                "lunch_date=" + lunch_date +
+                "lunch_date=" + lunchDate +
                 ", rating=" + rating +
                 ", restaurant=" + restaurant +
                 ", dishes=" + dishes +
