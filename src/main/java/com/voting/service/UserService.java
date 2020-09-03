@@ -50,8 +50,7 @@ public class UserService {
     }
 
     public User getWithLunch(int id) {
-        //TODO
-        return null;
+        return checkNotFoundWithId(userCrudRepository.getWithLunch(id), id);
     }
 
     @Transactional
