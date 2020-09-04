@@ -82,6 +82,14 @@ public class Lunch extends AbstractBaseEntity {
         this.users = users;
     }
 
+    public void incrementRating() {
+        ++rating;
+    }
+
+    public void decrementRating() {
+        --rating;
+    }
+
     @Override
     public String toString() {
         return "Lunch{" +

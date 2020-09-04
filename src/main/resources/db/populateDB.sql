@@ -42,9 +42,9 @@ VALUES (100006, 100003),
        (100013, 100005),
        (100014, 100005);
 
-INSERT INTO USERS (name, email, password, LUNCH_ID)
-VALUES ('User', 'user@yandex.ru', 'password', 100003),
-       ('Admin', 'admin@gmail.com', 'admin', 100004);
+INSERT INTO USERS (name, email, password, LAST_VOTE_DATETIME, LUNCH_ID)
+VALUES ('User', 'user@yandex.ru', 'password', '2020-08-30 10:00:00', 100003),
+       ('Admin', 'admin@gmail.com', 'admin', '2020-08-31 10:00:00', 100004);
 
 INSERT INTO USER_ROLES (role, user_id)
 VALUES ('USER', 100015),

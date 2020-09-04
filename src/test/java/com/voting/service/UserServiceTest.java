@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.voting.LunchTestData.FIRST_LUNCH;
@@ -83,5 +84,12 @@ public class UserServiceTest extends AbstractServiceTest {
         User user = userService.getWithLunch(USER_ID);
         Lunch lunch = user.getLunch();
         LUNCH_MATCHER.assertMatch(lunch, FIRST_LUNCH);
+    }
+
+    @Test
+    void vote() throws Exception {
+        userService.vote(USER_ID, FIRST_LUNCH, LocalDateTime.now());
+        LUNCH_MATCHER.assertMatch(userService.getWithLunch(USER_ID).getLunch(), FIRST_LUNCH);
+        FIRST_LUNCH.decrementRating();
     }
 }

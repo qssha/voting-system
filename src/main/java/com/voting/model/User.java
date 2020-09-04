@@ -3,6 +3,7 @@ package com.voting.model;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
@@ -35,9 +36,9 @@ public class User extends AbstractBaseEntity {
     private Set<Role> roles;
 
     @Column(name = "last_vote_datetime")
-    private Date lastVoteTime;
+    private LocalDateTime lastVoteDateTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     @JoinColumn(name = "lunch_id")
     private Lunch lunch;
 
@@ -101,12 +102,12 @@ public class User extends AbstractBaseEntity {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 
-    public Date getLastVoteTime() {
-        return lastVoteTime;
+    public LocalDateTime getLastVoteDateTime() {
+        return lastVoteDateTime;
     }
 
-    public void setLastVoteTime(Date lastVoteTime) {
-        this.lastVoteTime = lastVoteTime;
+    public void setLastVoteDateTime(LocalDateTime lastVoteTime) {
+        this.lastVoteDateTime = lastVoteTime;
     }
 
     public Lunch getLunch() {
