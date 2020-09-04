@@ -70,7 +70,7 @@ public class UserService {
 
         if (userLunch != null && lastVoteDateTime != null
                 && lastVoteDateTime.toLocalDate().equals(voteDateTime.toLocalDate())) {
-            if (lastVoteDateTime.toLocalTime().isAfter(endOfVoteTime)) {
+            if (voteDateTime.toLocalTime().isAfter(endOfVoteTime)) {
                 throw new VoteException("Can't re-vote after " + endOfVoteTime.toString());
             } else {
                 Lunch oldVotedLunch = currentUser.getLunch();

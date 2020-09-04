@@ -15,10 +15,10 @@ VALUES ('First restaurant'),
        ('Second restaurant'),
        ('Third restaurant');
 
-INSERT INTO LUNCHES(lunch_date, restaurant_id)
-VALUES ('2020-08-30', 100000),
-       ('2020-08-31', 100001),
-       ('2020-08-31', 100002);
+INSERT INTO LUNCHES(lunch_date, RATING, restaurant_id)
+VALUES ('2020-08-30', 1, 100000),
+       ('2020-08-31', 1, 100001),
+       ('2020-08-31', 0, 100002);
 
 INSERT INTO DISHES(name, price)
 VALUES ('Eggs', 100),
@@ -43,7 +43,7 @@ VALUES (100006, 100003),
        (100014, 100005);
 
 INSERT INTO USERS (name, email, password, LAST_VOTE_DATETIME, LUNCH_ID)
-VALUES ('User', 'user@yandex.ru', 'password', '2020-08-30 10:00:00', 100003),
+VALUES ('User', 'user@yandex.ru', 'password', '2020-08-30 9:00:00', 100003),
        ('Admin', 'admin@gmail.com', 'admin', '2020-08-31 10:00:00', 100004);
 
 INSERT INTO USER_ROLES (role, user_id)

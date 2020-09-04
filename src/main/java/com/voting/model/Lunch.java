@@ -33,6 +33,13 @@ public class Lunch extends AbstractBaseEntity {
         this.restaurant = restaurant;
     }
 
+    public Lunch(Integer id, LocalDate lunchDate, Integer rating, Restaurant restaurant) {
+        super(id);
+        this.lunchDate = lunchDate;
+        this.rating = rating;
+        this.restaurant = restaurant;
+    }
+
     public Lunch(Lunch lunch) {
         this.id = lunch.getId();
         this.lunchDate = lunch.getLunchDate();
