@@ -3,9 +3,6 @@ package com.voting.util;
 import com.voting.model.AbstractBaseEntity;
 import com.voting.util.exception.NotFoundException;
 
-import javax.validation.*;
-import java.util.Set;
-
 public class ValidationUtil {
     private ValidationUtil() {
     }

@@ -72,4 +72,10 @@ public class LunchServiceTest extends AbstractServiceTest {
         List<Lunch> lunches = lunchService.getBetweenDates(LocalDate.parse("2020-08-31"), LocalDate.parse("2020-09-01"));
         LUNCH_MATCHER.assertMatch(lunches, SECOND_LUNCH, THIRD_LUNCH);
     }
+
+    @Test
+    void getByRestaurantIdAndDate() throws Exception {
+        Lunch lunch = lunchService.getByRestaurantIdAndDate(100000, LocalDate.parse("2020-08-30"));
+        LUNCH_MATCHER.assertMatch(lunch, FIRST_LUNCH);
+    }
 }

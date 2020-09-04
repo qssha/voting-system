@@ -5,6 +5,7 @@ import com.voting.model.Role;
 import com.voting.model.User;
 import com.voting.util.exception.NotFoundException;
 import com.voting.util.exception.VoteException;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -12,10 +13,12 @@ import org.springframework.dao.DataAccessException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.voting.LunchTestData.FIRST_LUNCH;
-import static com.voting.LunchTestData.SECOND_LUNCH;
-import static com.voting.LunchTestData.THIRD_LUNCH;
-import static com.voting.LunchTestData.LUNCH_MATCHER;
+import static com.voting.LunchTestData.*;
+import static com.voting.RestaurantTestData.FIRST_RESTAURANT_ID;
+import static com.voting.RestaurantTestData.THIRD_RESTAURANT_ID;
+import static com.voting.UserTestData.NOT_FOUND;
+import static com.voting.UserTestData.getNew;
+import static com.voting.UserTestData.getUpdated;
 import static com.voting.UserTestData.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -23,6 +26,16 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private LunchService lunchService;
+
+    @AfterEach
+    void restoreLunchRating() {
+        FIRST_LUNCH.setRating(1);
+        SECOND_LUNCH.setRating(1);
+        THIRD_LUNCH.setRating(0);
+    }
 
     @Test
     void delete() throws Exception {
@@ -91,34 +104,35 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Test
     void voteExistingUser() throws Exception {
-        userService.vote(USER_ID, THIRD_LUNCH,
-                LocalDateTime.of(2020, 9, 1, 15, 0, 0));
+        userService.vote(USER_ID, THIRD_RESTAURANT_ID,
+                LocalDateTime.of(2020, 8, 31, 15, 0, 0));
+        THIRD_LUNCH.incrementRating();
         LUNCH_MATCHER.assertMatch(userService.getWithLunch(USER_ID).getLunch(), THIRD_LUNCH);
-        THIRD_LUNCH.decrementRating();
     }
 
     @Test
     void voteNewUser() throws Exception {
         User newUser = userService.create(getNew());
         int newId = newUser.getId();
-        userService.vote(newId, FIRST_LUNCH,
+        userService.vote(newId, FIRST_RESTAURANT_ID,
                 LocalDateTime.of(2020, 8, 30, 10, 0, 0));
+        FIRST_LUNCH.incrementRating();
         LUNCH_MATCHER.assertMatch(userService.getWithLunch(newId).getLunch(), FIRST_LUNCH);
-        FIRST_LUNCH.decrementRating();
+        LUNCH_MATCHER.assertMatch(lunchService.get(SECOND_LUNCH_ID), SECOND_LUNCH);
     }
 
     @Test
     void reVote() throws Exception {
-        userService.vote(ADMIN_ID, THIRD_LUNCH,
+        userService.vote(ADMIN_ID, THIRD_RESTAURANT_ID,
                 LocalDateTime.of(2020, 8, 31, 10, 0, 0));
-        LUNCH_MATCHER.assertMatch(userService.getWithLunch(ADMIN_ID).getLunch(), THIRD_LUNCH);
-        SECOND_LUNCH.decrementRating();
         THIRD_LUNCH.incrementRating();
+        SECOND_LUNCH.decrementRating();
+        LUNCH_MATCHER.assertMatch(userService.getWithLunch(ADMIN_ID).getLunch(), THIRD_LUNCH);
     }
 
     @Test
     void reVoteFailed() throws Exception {
-        assertThrows(VoteException.class, () -> userService.vote(USER_ID, FIRST_LUNCH,
+        assertThrows(VoteException.class, () -> userService.vote(USER_ID, FIRST_RESTAURANT_ID,
                 LocalDateTime.of(2020, 8, 30, 12, 0, 0)));
     }
 }

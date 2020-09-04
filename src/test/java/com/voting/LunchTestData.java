@@ -3,8 +3,6 @@ package com.voting;
 import com.voting.model.Lunch;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import static com.voting.RestaurantTestData.*;
 import static com.voting.model.AbstractBaseEntity.START_SEQ;

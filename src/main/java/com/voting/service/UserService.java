@@ -58,12 +58,13 @@ public class UserService {
         return checkNotFoundWithId(userCrudRepository.getWithLunch(id), id);
     }
 
-    public void vote(int id, Lunch lunch, LocalDateTime voteDateTime) {
-        voteWithEndTime(id, lunch, voteDateTime, LocalTime.of(11, 0, 0));
+    public void vote(int id, int restaurantId, LocalDateTime voteDateTime) {
+        voteWithEndTime(id, restaurantId, voteDateTime, LocalTime.of(11, 0, 0));
     }
 
     @Transactional
-    public void voteWithEndTime(int id, Lunch lunch, LocalDateTime voteDateTime, LocalTime endOfVoteTime) {
+    public void voteWithEndTime(int id, int restaurantId, LocalDateTime voteDateTime, LocalTime endOfVoteTime) {
+        Lunch lunch = lunchService.getByRestaurantIdAndDate(restaurantId, voteDateTime.toLocalDate());
         User currentUser = getWithLunch(id);
         Lunch userLunch = currentUser.getLunch();
         LocalDateTime lastVoteDateTime = currentUser.getLastVoteDateTime();

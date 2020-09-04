@@ -49,4 +49,8 @@ public class LunchService {
     public List<Lunch> getBetweenDates(LocalDate startDate, LocalDate endDate) {
         return lunchCrudRepository.getBetweenDates(startDate, endDate);
     }
+
+    public Lunch getByRestaurantIdAndDate(int id, LocalDate date) {
+        return checkNotFoundWithId(lunchCrudRepository.getByRestaurantIdAndDate(id, date), id);
+    }
 }
