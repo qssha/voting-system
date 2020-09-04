@@ -13,10 +13,7 @@ public class Dish extends AbstractBaseEntity {
     @Column(name = "price")
     private Integer price;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "dishes_lunches",
-            joinColumns = @JoinColumn(name = "dish_id"),
-            inverseJoinColumns = @JoinColumn(name = "lunch_id"))
+    @ManyToMany(mappedBy = "dishes", fetch = FetchType.LAZY)
     List<Lunch> lunches;
 
     public Dish() {}

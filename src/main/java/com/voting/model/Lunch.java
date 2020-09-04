@@ -18,7 +18,10 @@ public class Lunch extends AbstractBaseEntity {
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @ManyToMany(mappedBy = "lunches", fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "dishes_lunches",
+            joinColumns = @JoinColumn(name = "lunch_id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id"))
     List<Dish> dishes;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "lunch")
