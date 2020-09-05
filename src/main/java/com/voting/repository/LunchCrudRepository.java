@@ -24,4 +24,14 @@ public interface LunchCrudRepository extends JpaRepository<Lunch, Integer> {
 
     @Query("SELECT l from Lunch l WHERE l.lunchDate=:date AND l.restaurant.id=:id")
     Lunch getByRestaurantIdAndDate(@Param("id") int id, @Param("date") LocalDate date);
+
+    @Transactional
+    @Modifying
+    @Query(value = "insert into DISHES_LUNCHES (DISH_ID, LUNCH_ID) VALUES (:dishId, :lunchId)", nativeQuery = true)
+    void addDishById(@Param("lunchId") int id, @Param("dishId") int dishId);
+
+    @Transactional
+    @Modifying
+    @Query(value = "delete from DISHES_LUNCHES WHERE LUNCH_ID=:lunchId AND DISH_ID=:dishId", nativeQuery = true)
+    int deleteDishById(@Param("lunchId") int id, @Param("dishId") int dishId);
 }

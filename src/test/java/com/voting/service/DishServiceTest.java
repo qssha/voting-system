@@ -54,6 +54,13 @@ public class DishServiceTest extends AbstractServiceTest {
     }
 
     @Test
+    void update() throws Exception {
+        Dish updated = getUpdated();
+        dishService.update(updated);
+        DISH_MATCHER.assertMatch(dishService.get(FIRST_DISH_ID), updated);
+    }
+
+    @Test
     void getAll() throws Exception {
         List<Dish> all = getAllDishesSortedByName();
         DISH_MATCHER.assertMatch(dishService.getAll(), all);

@@ -1,14 +1,17 @@
 package com.voting.service;
 
+import com.voting.model.Dish;
 import com.voting.model.Lunch;
 import com.voting.repository.LunchCrudRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.voting.util.ValidationUtil.checkNotFound;
 import static com.voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
@@ -52,5 +55,20 @@ public class LunchService {
 
     public Lunch getByRestaurantIdAndDate(int id, LocalDate date) {
         return checkNotFoundWithId(lunchCrudRepository.getByRestaurantIdAndDate(id, date), id);
+    }
+
+    public void addDishById(int id, int dishId) {
+        lunchCrudRepository.addDishById(id, dishId);
+    }
+
+    public void deleteDishById(int id, int dishId) {
+        checkNotFound(lunchCrudRepository.deleteDishById(id, dishId) != 0, "Lunch id=" + id + ", Dish id=" + dishId);
+    }
+
+    @Transactional
+    public void addDish(int id, Dish dish) {
+        Lunch lunch = get(id);
+        lunch.getDishes().add(dish);
+        update(lunch);
     }
 }
