@@ -54,11 +54,7 @@ public class UserService {
         return checkNotFound(userCrudRepository.getByEmail(email), "email=" + email);
     }
 
-    public User getWithLunch(int id) {
-        return checkNotFoundWithId(userCrudRepository.getWithLunch(id), id);
-    }
-
-    public void vote(int id, int restaurantId, LocalDateTime voteDateTime) {
+/*    public void vote(int id, int restaurantId, LocalDateTime voteDateTime) {
         voteWithEndTime(id, restaurantId, voteDateTime, LocalTime.of(11, 0, 0));
     }
 
@@ -86,5 +82,5 @@ public class UserService {
             currentUser.setLastVoteDateTime(voteDateTime);
             update(currentUser);
         }
-    }
+    }*/
 }

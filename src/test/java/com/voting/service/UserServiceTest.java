@@ -30,13 +30,6 @@ public class UserServiceTest extends AbstractServiceTest {
     @Autowired
     private LunchService lunchService;
 
-    @AfterEach
-    void restoreLunchRating() {
-        FIRST_LUNCH.setRating(1);
-        SECOND_LUNCH.setRating(1);
-        THIRD_LUNCH.setRating(0);
-    }
-
     @Test
     void delete() throws Exception {
         userService.delete(USER_ID);
@@ -95,7 +88,7 @@ public class UserServiceTest extends AbstractServiceTest {
         USER_MATCHER.assertMatch(all, ADMIN, USER);
     }
 
-    @Test
+/*    @Test
     void getWithLunch() throws Exception {
         User user = userService.getWithLunch(USER_ID);
         Lunch lunch = user.getLunch();
@@ -134,5 +127,5 @@ public class UserServiceTest extends AbstractServiceTest {
     void reVoteFailed() throws Exception {
         assertThrows(VoteException.class, () -> userService.vote(USER_ID, FIRST_RESTAURANT_ID,
                 LocalDateTime.of(2020, 8, 30, 12, 0, 0)));
-    }
+    }*/
 }

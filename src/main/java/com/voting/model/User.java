@@ -35,13 +35,6 @@ public class User extends AbstractBaseEntity {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
-    @Column(name = "last_vote_datetime")
-    private LocalDateTime lastVoteDateTime;
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
-    @JoinColumn(name = "lunch_id")
-    private Lunch lunch;
-
     public User() {
     }
 
@@ -100,22 +93,6 @@ public class User extends AbstractBaseEntity {
 
     public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
-    }
-
-    public LocalDateTime getLastVoteDateTime() {
-        return lastVoteDateTime;
-    }
-
-    public void setLastVoteDateTime(LocalDateTime lastVoteTime) {
-        this.lastVoteDateTime = lastVoteTime;
-    }
-
-    public Lunch getLunch() {
-        return lunch;
-    }
-
-    public void setLunch(Lunch lunch) {
-        this.lunch = lunch;
     }
 
     public String getName() {
