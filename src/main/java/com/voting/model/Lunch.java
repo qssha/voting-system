@@ -13,11 +13,11 @@ public class Lunch extends AbstractBaseEntity {
     @Column(name = "lunch_date")
     private LocalDate lunchDate;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "dishes_lunches",
             joinColumns = @JoinColumn(name = "lunch_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id"))
