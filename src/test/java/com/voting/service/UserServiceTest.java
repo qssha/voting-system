@@ -1,8 +1,10 @@
 package com.voting.service;
 
+import com.voting.VoteTestData;
 import com.voting.model.Lunch;
 import com.voting.model.Role;
 import com.voting.model.User;
+import com.voting.model.Vote;
 import com.voting.util.exception.NotFoundException;
 import com.voting.util.exception.VoteException;
 import org.junit.jupiter.api.AfterEach;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,6 +23,7 @@ import static com.voting.UserTestData.NOT_FOUND;
 import static com.voting.UserTestData.getNew;
 import static com.voting.UserTestData.getUpdated;
 import static com.voting.UserTestData.*;
+import static com.voting.VoteTestData.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class UserServiceTest extends AbstractServiceTest {
@@ -88,44 +92,50 @@ public class UserServiceTest extends AbstractServiceTest {
         USER_MATCHER.assertMatch(all, ADMIN, USER);
     }
 
-/*    @Test
-    void getWithLunch() throws Exception {
-        User user = userService.getWithLunch(USER_ID);
-        Lunch lunch = user.getLunch();
-        LUNCH_MATCHER.assertMatch(lunch, FIRST_LUNCH);
+    @Test
+    void getVoteByIdAndName() throws Exception {
+        VOTE_MATCHER.assertMatch(userService.getVote(USER_ID, LocalDate.of(2020, 8, 30)),
+                USER_VOTE);
     }
 
     @Test
-    void voteExistingUser() throws Exception {
-        userService.vote(USER_ID, THIRD_RESTAURANT_ID,
-                LocalDateTime.of(2020, 8, 31, 15, 0, 0));
-        THIRD_LUNCH.incrementRating();
-        LUNCH_MATCHER.assertMatch(userService.getWithLunch(USER_ID).getLunch(), THIRD_LUNCH);
+    void getVoteNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () -> userService.getVote(NOT_FOUND, LocalDate.of(2020, 8, 30)));
     }
 
     @Test
-    void voteNewUser() throws Exception {
-        User newUser = userService.create(getNew());
-        int newId = newUser.getId();
-        userService.vote(newId, FIRST_RESTAURANT_ID,
-                LocalDateTime.of(2020, 8, 30, 10, 0, 0));
-        FIRST_LUNCH.incrementRating();
-        LUNCH_MATCHER.assertMatch(userService.getWithLunch(newId).getLunch(), FIRST_LUNCH);
-        LUNCH_MATCHER.assertMatch(lunchService.get(SECOND_LUNCH_ID), SECOND_LUNCH);
+    void getAllVotesForDate() throws Exception {
+        VOTE_MATCHER.assertMatch(userService.getAllVotes(USER_ID), USER_VOTE);
+    }
+
+    @Test
+    void vote() throws Exception {
+        LocalDateTime voteTime = LocalDateTime.of(2020, 8, 31, 10, 0, 0);
+        Vote created = VoteTestData.getNew();
+        userService.vote(created, voteTime);
+        Vote newVote = userService.getVote(USER_ID, voteTime.toLocalDate());
+        created.setId(newVote.getId());
+        VOTE_MATCHER.assertMatch(newVote, created);
     }
 
     @Test
     void reVote() throws Exception {
-        userService.vote(ADMIN_ID, THIRD_RESTAURANT_ID,
-                LocalDateTime.of(2020, 8, 31, 10, 0, 0));
-        THIRD_LUNCH.incrementRating();
-        SECOND_LUNCH.decrementRating();
-        LUNCH_MATCHER.assertMatch(userService.getWithLunch(ADMIN_ID).getLunch(), THIRD_LUNCH);
+        LocalDateTime voteTime = LocalDateTime.of(2020, 8, 31, 10, 0, 0);
+        Vote createdForReVote = VoteTestData.getNewForReVote();
+        userService.vote(createdForReVote, voteTime);
+        Vote updatedVote = userService.getVote(ADMIN_ID, voteTime.toLocalDate());
+        createdForReVote.setId(updatedVote.getId());
+        VOTE_MATCHER.assertMatch(updatedVote, createdForReVote);
     }
 
     @Test
-    void reVoteFailed() throws Exception {
-        assertThrows(VoteException.class, () -> userService.vote(USER_ID, FIRST_RESTAURANT_ID,
-                LocalDateTime.of(2020, 8, 30, 12, 0, 0)));
-    }*/
+    void voteTimeExpired() throws Exception {
+        assertThrows(VoteException.class, () -> userService.vote(getNewForReVote(),
+                LocalDateTime.of(2020, 9, 30, 12, 0, 0)));
+    }
+
+    @Test
+    void voteNoLunch() throws Exception {
+        //TODO
+    }
 }

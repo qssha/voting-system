@@ -3,14 +3,11 @@ package com.voting.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "votes")
 public class Vote extends AbstractBaseEntity {
-
-    @Column(name = "vote_datetime")
-    private LocalDateTime voteDateTime;
 
     @Column(name = "user_id")
     private Integer userFK;
@@ -18,12 +15,23 @@ public class Vote extends AbstractBaseEntity {
     @Column(name = "restaurant_id")
     private Integer restaurantFK;
 
-    public LocalDateTime getVoteDateTime() {
-        return voteDateTime;
+    @Column(name = "vote_date")
+    private LocalDate voteDate;
+
+    public Vote() {
     }
 
-    public void setVoteDateTime(LocalDateTime voteDateTime) {
-        this.voteDateTime = voteDateTime;
+    public Vote(Integer id, Integer userFK, Integer restaurantFK, LocalDate voteDate) {
+        super(id);
+        this.userFK = userFK;
+        this.restaurantFK = restaurantFK;
+        this.voteDate = voteDate;
+    }
+
+    public Vote(Integer userFK, Integer restaurantFK, LocalDate voteDate) {
+        this.userFK = userFK;
+        this.restaurantFK = restaurantFK;
+        this.voteDate = voteDate;
     }
 
     public Integer getUserFK() {
@@ -40,5 +48,13 @@ public class Vote extends AbstractBaseEntity {
 
     public void setRestaurantFK(Integer restaurantFK) {
         this.restaurantFK = restaurantFK;
+    }
+
+    public LocalDate getVoteDate() {
+        return voteDate;
+    }
+
+    public void setVoteDate(LocalDate voteDateTime) {
+        this.voteDate = voteDateTime;
     }
 }

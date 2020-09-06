@@ -1,14 +1,16 @@
 package com.voting.service;
 
-import com.voting.model.Lunch;
 import com.voting.model.User;
+import com.voting.model.Vote;
 import com.voting.repository.UserCrudRepository;
+import com.voting.repository.VoteCrudRepository;
 import com.voting.util.exception.VoteException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -20,11 +22,11 @@ import static com.voting.util.ValidationUtil.checkNotFoundWithId;
 public class UserService {
 
     private final UserCrudRepository userCrudRepository;
-    private final LunchService lunchService;
+    private final VoteCrudRepository voteCrudRepository;
 
-    public UserService(UserCrudRepository userCrudRepository, LunchService lunchService) {
+    public UserService(UserCrudRepository userCrudRepository, VoteCrudRepository voteCrudRepository) {
         this.userCrudRepository = userCrudRepository;
-        this.lunchService = lunchService;
+        this.voteCrudRepository = voteCrudRepository;
     }
 
     public User create(User user) {
@@ -54,33 +56,30 @@ public class UserService {
         return checkNotFound(userCrudRepository.getByEmail(email), "email=" + email);
     }
 
-/*    public void vote(int id, int restaurantId, LocalDateTime voteDateTime) {
-        voteWithEndTime(id, restaurantId, voteDateTime, LocalTime.of(11, 0, 0));
+    public void vote(Vote vote, LocalDateTime voteDateTime) {
+        voteWithEndTime(vote, voteDateTime, LocalTime.of(11, 0, 0));
     }
 
     @Transactional
-    public void voteWithEndTime(int id, int restaurantId, LocalDateTime voteDateTime, LocalTime endOfVoteTime) {
-        Lunch lunch = lunchService.getByRestaurantIdAndDate(restaurantId, voteDateTime.toLocalDate());
-        User currentUser = getWithLunch(id);
-        Lunch userLunch = currentUser.getLunch();
-        LocalDateTime lastVoteDateTime = currentUser.getLastVoteDateTime();
+    public void voteWithEndTime(Vote vote, LocalDateTime voteDateTime, LocalTime endOfVoteTime) {
+        //TODO CHECK IF LUNCH EXIST FOR TODAY
 
-        if (userLunch != null && lastVoteDateTime != null
-                && lastVoteDateTime.toLocalDate().equals(voteDateTime.toLocalDate())) {
-            if (voteDateTime.toLocalTime().isAfter(endOfVoteTime)) {
-                throw new VoteException("Can't re-vote after " + endOfVoteTime.toString());
-            } else {
-                Lunch oldVotedLunch = currentUser.getLunch();
-                oldVotedLunch.decrementRating();
-                lunchService.update(oldVotedLunch);
+        if (voteDateTime.toLocalTime().isAfter(endOfVoteTime)) {
+            throw new VoteException("Can't re-vote after " + endOfVoteTime.toString());
+        } else {
+            Vote prevVote = voteCrudRepository.getByUserFKAndVoteDate(vote.getUserFK(), voteDateTime.toLocalDate());
+            if (prevVote != null) {
+                vote.setId(prevVote.getId());
             }
+            voteCrudRepository.save(vote);
         }
+    }
 
-        if (lunch != null) {
-            lunch.incrementRating();
-            currentUser.setLunch(lunch);
-            currentUser.setLastVoteDateTime(voteDateTime);
-            update(currentUser);
-        }
-    }*/
+    public Vote getVote(int id, LocalDate date) {
+        return checkNotFoundWithId(voteCrudRepository.getByUserFKAndVoteDate(id, date), id);
+    }
+
+    public List<Vote> getAllVotes(int id) {
+        return voteCrudRepository.getAllByUserFK(id);
+    }
 }
