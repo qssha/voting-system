@@ -19,7 +19,8 @@ public class RootController {
     }
 
     @GetMapping("/")
-    public @ResponseBody String root() {
+    public @ResponseBody
+    String root() {
         System.out.println(userService.getAll());
 
         log.debug("FIRST DEBUG");

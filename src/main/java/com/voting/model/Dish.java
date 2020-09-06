@@ -16,7 +16,8 @@ public class Dish extends AbstractBaseEntity {
     @ManyToMany(mappedBy = "dishes", fetch = FetchType.LAZY)
     List<Lunch> lunches;
 
-    public Dish() {}
+    public Dish() {
+    }
 
     public Dish(Integer id, String name, Integer price) {
         super(id);
