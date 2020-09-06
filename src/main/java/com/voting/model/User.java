@@ -3,6 +3,7 @@ package com.voting.model;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;

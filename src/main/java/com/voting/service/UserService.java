@@ -1,11 +1,16 @@
 package com.voting.service;
 
+import com.voting.model.Lunch;
 import com.voting.model.User;
 import com.voting.repository.UserCrudRepository;
+import com.voting.util.exception.VoteException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static com.voting.util.ValidationUtil.checkNotFound;
