@@ -15,6 +15,7 @@ public class VoteTestData {
 
     public static final int NOT_FOUND = 10;
     public static final int USER_VOTE_ID = START_SEQ + 17;
+    public static final int ADMIN_VOTE_ID = START_SEQ + 18;
     public static final Vote USER_VOTE = new Vote(USER_VOTE_ID, USER_ID, FIRST_RESTAURANT_ID, LocalDate.parse("2020-08-30"));
 
     public static Vote getNew() {
@@ -22,6 +23,10 @@ public class VoteTestData {
     }
 
     public static Vote getNewForReVote() {
-        return new Vote(ADMIN_ID, THIRD_RESTAURANT_ID, LocalDate.parse("2020-08-31"));
+        return new Vote(ADMIN_VOTE_ID, ADMIN_ID, THIRD_RESTAURANT_ID, LocalDate.parse("2020-08-31"));
+    }
+
+    public static Vote getVoteForLunchThatNotExist() {
+        return new Vote(ADMIN_ID, FIRST_RESTAURANT_ID);
     }
 }

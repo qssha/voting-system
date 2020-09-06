@@ -122,11 +122,12 @@ public class UserServiceTest extends AbstractServiceTest {
     @Test
     void voteTimeExpired() throws Exception {
         assertThrows(VoteException.class, () -> userService.vote(getNewForReVote(),
-                LocalDateTime.of(2020, 9, 30, 12, 0, 0)));
+                LocalDateTime.of(2020, 8, 31, 12, 0, 0)));
     }
 
     @Test
     void voteNoLunch() throws Exception {
-        //TODO
+        assertThrows(NotFoundException.class, () -> userService.vote(VoteTestData.getVoteForLunchThatNotExist(),
+                LocalDateTime.of(2020, 8, 31, 10, 0, 0)));
     }
 }

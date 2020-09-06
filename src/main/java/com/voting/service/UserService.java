@@ -23,10 +23,12 @@ public class UserService {
 
     private final UserCrudRepository userCrudRepository;
     private final VoteCrudRepository voteCrudRepository;
+    private final LunchService lunchService;
 
-    public UserService(UserCrudRepository userCrudRepository, VoteCrudRepository voteCrudRepository) {
+    public UserService(UserCrudRepository userCrudRepository, VoteCrudRepository voteCrudRepository, LunchService lunchService) {
         this.userCrudRepository = userCrudRepository;
         this.voteCrudRepository = voteCrudRepository;
+        this.lunchService = lunchService;
     }
 
     public User create(User user) {
@@ -62,7 +64,8 @@ public class UserService {
 
     @Transactional
     public void voteWithEndTime(Vote vote, LocalDateTime voteDateTime, LocalTime endOfVoteTime) {
-        //TODO CHECK IF LUNCH EXIST FOR TODAY
+        //checking lunch for this date by restaurant id, lunches will be cached
+        lunchService.getByRestaurantIdAndDate(vote.getRestaurantFK(), voteDateTime.toLocalDate());
 
         if (voteDateTime.toLocalTime().isAfter(endOfVoteTime)) {
             throw new VoteException("Can't re-vote after " + endOfVoteTime.toString());

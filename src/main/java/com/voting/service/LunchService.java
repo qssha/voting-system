@@ -9,8 +9,7 @@ import org.springframework.util.Assert;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.voting.util.ValidationUtil.checkNotFound;
-import static com.voting.util.ValidationUtil.checkNotFoundWithId;
+import static com.voting.util.ValidationUtil.*;
 
 @Service
 public class LunchService {
@@ -52,7 +51,8 @@ public class LunchService {
     }
 
     public Lunch getByRestaurantIdAndDate(int id, LocalDate date) {
-        return checkNotFoundWithId(lunchCrudRepository.getByRestaurantIdAndDate(id, date), id);
+        return checkNotFoundWithMessage(lunchCrudRepository.getByRestaurantIdAndDate(id, date), "Restaurant with id=" + id
+                + " doesn't offer lunch for date=" + date.toString());
     }
 
     public void addDishById(int id, int dishId) {
