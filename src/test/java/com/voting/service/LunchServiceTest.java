@@ -1,6 +1,5 @@
 package com.voting.service;
 
-import com.voting.model.Dish;
 import com.voting.model.Lunch;
 import com.voting.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
@@ -8,18 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
-import com.voting.DishTestData;
-
-import static com.voting.DishTestData.FIRST_DISH;
-import static com.voting.DishTestData.SECOND_DISH;
-import static com.voting.DishTestData.THIRD_DISH;
-import static com.voting.DishTestData.NINTH_DISH;
-import static com.voting.DishTestData.FIRST_DISH_ID;
-import static com.voting.DishTestData.NINTH_DISH_ID;
-import static com.voting.DishTestData.DISH_MATCHER;
+import static com.voting.DishTestData.*;
+import static com.voting.LunchTestData.NOT_FOUND;
+import static com.voting.LunchTestData.getNew;
 import static com.voting.LunchTestData.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

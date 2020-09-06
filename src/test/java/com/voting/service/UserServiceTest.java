@@ -1,13 +1,11 @@
 package com.voting.service;
 
 import com.voting.VoteTestData;
-import com.voting.model.Lunch;
 import com.voting.model.Role;
 import com.voting.model.User;
 import com.voting.model.Vote;
 import com.voting.util.exception.NotFoundException;
 import com.voting.util.exception.VoteException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -16,12 +14,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.voting.LunchTestData.*;
-import static com.voting.RestaurantTestData.FIRST_RESTAURANT_ID;
-import static com.voting.RestaurantTestData.THIRD_RESTAURANT_ID;
 import static com.voting.UserTestData.NOT_FOUND;
 import static com.voting.UserTestData.getNew;
-import static com.voting.UserTestData.getUpdated;
 import static com.voting.UserTestData.*;
 import static com.voting.VoteTestData.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -30,9 +24,6 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private LunchService lunchService;
 
     @Test
     void delete() throws Exception {
