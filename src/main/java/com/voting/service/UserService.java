@@ -1,9 +1,11 @@
 package com.voting.service;
 
+import com.voting.model.Lunch;
 import com.voting.model.User;
 import com.voting.model.Vote;
 import com.voting.repository.UserCrudRepository;
 import com.voting.repository.VoteCrudRepository;
+import com.voting.util.exception.NotFoundException;
 import com.voting.util.exception.VoteException;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -65,7 +67,10 @@ public class UserService {
     @Transactional
     public void voteWithEndTime(Vote vote, LocalDateTime voteDateTime, LocalTime endOfVoteTime) {
         //checking lunch for this date by restaurant id, lunches will be cached
-        lunchService.getByRestaurantIdAndDate(vote.getRestaurantFK(), voteDateTime.toLocalDate());
+        if (!checkLunchForDate(vote.getRestaurantFK(), voteDateTime.toLocalDate())) {
+            throw new NotFoundException("Restaurant with id=" + vote.getRestaurantFK()
+                    + " doesn't offer lunch for date=" + voteDateTime.toLocalDate().toString());
+        }
 
         if (voteDateTime.toLocalTime().isAfter(endOfVoteTime)) {
             throw new VoteException("Can't re-vote after " + endOfVoteTime.toString());
@@ -84,5 +89,9 @@ public class UserService {
 
     public List<Vote> getAllVotes(int id) {
         return voteCrudRepository.getAllByUserFK(id);
+    }
+
+    private boolean checkLunchForDate(int restaurantId, LocalDate date) {
+        return lunchService.getByDate(date).stream().anyMatch(x -> x.getRestaurant().getId() == restaurantId);
     }
 }

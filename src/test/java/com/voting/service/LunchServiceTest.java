@@ -87,7 +87,7 @@ public class LunchServiceTest extends AbstractServiceTest {
     @Test
     void getByRestaurantIdAndDate() throws Exception {
         Lunch lunch = lunchService.getByRestaurantIdAndDate(100000, LocalDate.parse("2020-08-30"));
-        LUNCH_MATCHER_NO_LAZY_FIELDS.assertMatch(lunch, FIRST_LUNCH);
+        LUNCH_MATCHER.assertMatch(lunch, FIRST_LUNCH);
     }
 
     @Test

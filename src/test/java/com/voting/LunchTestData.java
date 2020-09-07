@@ -10,8 +10,6 @@ import static com.voting.model.AbstractBaseEntity.START_SEQ;
 
 public class LunchTestData {
     public static final TestMatcher<Lunch> LUNCH_MATCHER = TestMatcher.usingFieldsComparator(Lunch.class, "dishes");
-    public static final TestMatcher<Lunch> LUNCH_MATCHER_NO_LAZY_FIELDS =
-            TestMatcher.usingFieldsComparator(Lunch.class, "dishes", "restaurant");
 
     public static final int NOT_FOUND = 10;
 

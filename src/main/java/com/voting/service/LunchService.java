@@ -51,8 +51,7 @@ public class LunchService {
     }
 
     public Lunch getByRestaurantIdAndDate(int id, LocalDate date) {
-        return checkNotFoundWithMessage(lunchCrudRepository.getByRestaurantIdAndDate(id, date), "Restaurant with id=" + id
-                + " doesn't offer lunch for date=" + date.toString());
+        return checkNotFoundWithId(lunchCrudRepository.getByRestaurantIdAndDate(id, date), id);
     }
 
     public void addDishById(int id, int dishId) {

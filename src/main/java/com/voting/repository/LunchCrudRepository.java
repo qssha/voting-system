@@ -36,7 +36,7 @@ public interface LunchCrudRepository extends JpaRepository<Lunch, Integer> {
     @Query("SELECT l from Lunch l WHERE l.lunchDate>= :startDate AND l.lunchDate< :endDate ORDER BY l.lunchDate DESC")
     List<Lunch> getBetweenDates(@Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 
-    //LAZY fetch for checking Lunch not null
+    @EntityGraph(attributePaths = {"restaurant", "dishes"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT l from Lunch l WHERE l.lunchDate=:date AND l.restaurant.id=:id")
     Lunch getByRestaurantIdAndDate(@Param("id") int id, @Param("date") LocalDate date);
 
