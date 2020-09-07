@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static com.voting.DishTestData.*;
@@ -68,6 +69,10 @@ public class DishServiceTest extends AbstractServiceTest {
 
     @Test
     void createWithException() throws Exception {
-        //TODO
+        validateRootCause(() -> dishService.create(new Dish(null, null, null)), ConstraintViolationException.class);
+        validateRootCause(() -> dishService.create(new Dish(null, "", 100)), ConstraintViolationException.class);
+        validateRootCause(() -> dishService.create(new Dish(null, "D", 100)), ConstraintViolationException.class);
+        validateRootCause(() -> dishService.create(new Dish(null, "Dish", null)), ConstraintViolationException.class);
+        validateRootCause(() -> dishService.create(new Dish(null, "Dish", 1)), ConstraintViolationException.class);
     }
 }
