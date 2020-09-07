@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import static com.voting.DishTestData.*;
 import static com.voting.LunchTestData.NOT_FOUND;
 import static com.voting.LunchTestData.getNew;
 import static com.voting.LunchTestData.*;
+import static com.voting.RestaurantTestData.FIRST_RESTAURANT;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class LunchServiceTest extends AbstractServiceTest {
@@ -116,6 +118,11 @@ public class LunchServiceTest extends AbstractServiceTest {
 
     @Test
     void createWithException() throws Exception {
-        //TODO
+        validateRootCause(() -> lunchService.create(new Lunch(null,
+                null, null)), ConstraintViolationException.class);
+        validateRootCause(() -> lunchService.create(new Lunch(null,
+                null, FIRST_RESTAURANT)), ConstraintViolationException.class);
+        validateRootCause(() -> lunchService.create(new Lunch(null,
+                LocalDate.of(2020, 8, 31), null)), ConstraintViolationException.class);
     }
 }
