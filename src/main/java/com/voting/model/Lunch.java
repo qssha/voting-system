@@ -1,6 +1,7 @@
 package com.voting.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +11,8 @@ import java.util.List;
 @Table(name = "lunches")
 public class Lunch extends AbstractBaseEntity {
 
-    @Column(name = "lunch_date")
+    @Column(name = "lunch_date", nullable = false)
+    @NotNull
     private LocalDate lunchDate;
 
     @ManyToOne(fetch = FetchType.LAZY)

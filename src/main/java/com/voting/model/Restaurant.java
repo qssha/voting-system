@@ -1,13 +1,17 @@
 package com.voting.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
 @Table(name = "restaurants")
 public class Restaurant extends AbstractBaseEntity {
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
+    @NotBlank
+    @Size(min = 2, max = 100)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "restaurant")

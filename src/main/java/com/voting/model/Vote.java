@@ -3,6 +3,7 @@ package com.voting.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
@@ -15,7 +16,8 @@ public class Vote extends AbstractBaseEntity {
     @Column(name = "restaurant_id")
     private Integer restaurantFK;
 
-    @Column(name = "vote_date")
+    @Column(name = "vote_date", nullable = false)
+    @NotNull
     private LocalDate voteDate;
 
     public Vote() {

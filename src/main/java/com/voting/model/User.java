@@ -16,27 +16,27 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends AbstractBaseEntity {
 
+    @Column(name = "name", nullable = false)
     @NotBlank
     @Size(min = 2, max = 100)
-    @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "email", nullable = false, unique = true)
     @NotBlank
     @Email
     @Size(max = 100)
-    @Column(name = "email", nullable = false)
     private String email;
 
+    @Column(name = "password", nullable = false)
     @NotBlank
     @Size(min = 5, max = 100)
-    @Column(name = "password", nullable = false)
     private String password;
 
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
 
-    @NotNull
     @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
+    @NotNull
     private Date registered = new Date();
 
     @Enumerated(EnumType.STRING)

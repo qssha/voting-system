@@ -1,16 +1,25 @@
 package com.voting.model;
 
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
 @Table(name = "dishes")
 public class Dish extends AbstractBaseEntity {
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
+    @NotBlank
+    @Size(min = 2, max = 100)
     private String name;
 
     @Column(name = "price")
+    @NotNull
+    @Range(min = 5, max = 100000)
     private Integer price;
 
     @ManyToMany(mappedBy = "dishes", fetch = FetchType.LAZY)
