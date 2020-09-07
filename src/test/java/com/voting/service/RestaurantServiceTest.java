@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 
 import static com.voting.LunchTestData.FIRST_LUNCH;
@@ -79,6 +80,8 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     void createWithException() throws Exception {
-        //TODO
+        validateRootCause(() -> restaurantService.create(new Restaurant(null, null)), ConstraintViolationException.class);
+        validateRootCause(() -> restaurantService.create(new Restaurant(null, "")), ConstraintViolationException.class);
+        validateRootCause(() -> restaurantService.create(new Restaurant(null, "R")), ConstraintViolationException.class);
     }
 }
