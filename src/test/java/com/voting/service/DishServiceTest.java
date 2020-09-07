@@ -65,4 +65,9 @@ public class DishServiceTest extends AbstractServiceTest {
         List<Dish> all = getAllDishesSortedByName();
         DISH_MATCHER.assertMatch(dishService.getAll(), all);
     }
+
+    @Test
+    void createWithException() throws Exception {
+        //TODO
+    }
 }

@@ -113,4 +113,9 @@ public class LunchServiceTest extends AbstractServiceTest {
     void deleteDishByNotFound() throws Exception {
         assertThrows(NotFoundException.class, () -> lunchService.deleteDishById(FIRST_LUNCH_ID, NOT_FOUND));
     }
+
+    @Test
+    void createWithException() throws Exception {
+        //TODO
+    }
 }

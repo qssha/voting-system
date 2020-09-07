@@ -22,6 +22,7 @@
         <!-- Hibernate -->
         <hibernate.version>5.4.18.Final</hibernate.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
+        <javax-el.version>3.0.1-b11</javax-el.version>
 
         <!-- Logging -->
         <logback.version>1.2.3</logback.version>
@@ -86,6 +87,14 @@
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
             <version>${hibernate-validator.version}</version>
+        </dependency>
+
+        <!--http://hibernate.org/validator/documentation/getting-started/#unified-expression-language-el-->
+        <dependency>
+            <groupId>org.glassfish</groupId>
+            <artifactId>javax.el</artifactId>
+            <version>${javax-el.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- HSQLDB-->

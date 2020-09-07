@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -129,5 +130,19 @@ public class UserServiceTest extends AbstractServiceTest {
     void voteNoLunch() throws Exception {
         assertThrows(NotFoundException.class, () -> userService.vote(VoteTestData.getVoteForLunchThatNotExist(),
                 LocalDateTime.of(2020, 8, 31, 10, 0, 0)));
+    }
+
+    @Test
+    void createWithException() throws Exception {
+        validateRootCause(() -> userService.create(new User(null, "", "mail@yandex.ru",
+                "password", Role.USER)), ConstraintViolationException.class);
+        validateRootCause(() -> userService.create(new User(null, "User", "",
+                "password", Role.USER)), ConstraintViolationException.class);
+        validateRootCause(() -> userService.create(new User(null, "User", "mail@yandex.ru",
+                "", Role.USER)), ConstraintViolationException.class);
+        validateRootCause(() -> userService.create(new User(null, "U", "mail@yandex.ru",
+                "password", Role.USER)), ConstraintViolationException.class);;
+        validateRootCause(() -> userService.create(new User(null, "User", "mail.ru",
+                "password", Role.USER)), ConstraintViolationException.class);
     }
 }

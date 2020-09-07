@@ -76,4 +76,9 @@ public class RestaurantServiceTest extends AbstractServiceTest {
         List<Lunch> lunches = restaurant.getLunches();
         LUNCH_MATCHER.assertMatch(lunches, FIRST_LUNCH);
     }
+
+    @Test
+    void createWithException() throws Exception {
+        //TODO
+    }
 }
