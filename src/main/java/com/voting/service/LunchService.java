@@ -2,6 +2,7 @@ package com.voting.service;
 
 import com.voting.model.Lunch;
 import com.voting.repository.LunchCrudRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -42,6 +43,7 @@ public class LunchService {
         checkNotFoundWithId(lunchCrudRepository.save(lunch), lunch.getId());
     }
 
+    @Cacheable("lunches")
     public List<Lunch> getByDate(LocalDate date) {
         return lunchCrudRepository.getByLunchDate(date);
     }
