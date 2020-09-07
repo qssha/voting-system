@@ -3,6 +3,10 @@ package com.voting.model;
 import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
@@ -12,19 +16,27 @@ import java.util.Set;
 @Table(name = "users")
 public class User extends AbstractBaseEntity {
 
-    @Column(name = "name")
+    @NotBlank
+    @Size(min = 2, max = 100)
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email")
+    @NotBlank
+    @Email
+    @Size(max = 100)
+    @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "password")
+    @NotBlank
+    @Size(min = 5, max = 100)
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "enabled")
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
 
-    @Column(name = "registered")
+    @NotNull
+    @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
     private Date registered = new Date();
 
     @Enumerated(EnumType.STRING)
