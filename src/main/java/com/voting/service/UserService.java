@@ -1,6 +1,5 @@
 package com.voting.service;
 
-import com.voting.model.Lunch;
 import com.voting.model.User;
 import com.voting.model.Vote;
 import com.voting.repository.UserCrudRepository;

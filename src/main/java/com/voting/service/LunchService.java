@@ -11,7 +11,8 @@ import org.springframework.util.Assert;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.voting.util.ValidationUtil.*;
+import static com.voting.util.ValidationUtil.checkNotFound;
+import static com.voting.util.ValidationUtil.checkNotFoundWithId;
 
 @Service
 public class LunchService {
