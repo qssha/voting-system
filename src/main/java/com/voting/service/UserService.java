@@ -7,6 +7,8 @@ import com.voting.repository.UserCrudRepository;
 import com.voting.repository.VoteCrudRepository;
 import com.voting.util.exception.NotFoundException;
 import com.voting.util.exception.VoteException;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,11 +35,13 @@ public class UserService {
         this.lunchService = lunchService;
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return userCrudRepository.save(user);
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) {
         checkNotFoundWithId(userCrudRepository.delete(id) != 0, id);
     }
@@ -46,10 +50,12 @@ public class UserService {
         return checkNotFoundWithId(userCrudRepository.findById(id).orElse(null), id);
     }
 
+    @Cacheable(value = "users")
     public List<User> getAll() {
         return userCrudRepository.findAll(Sort.by(Sort.Direction.ASC, "name", "email"));
     }
 
+    @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(userCrudRepository.save(user), user.getId());

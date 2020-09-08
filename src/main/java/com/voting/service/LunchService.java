@@ -2,6 +2,7 @@ package com.voting.service;
 
 import com.voting.model.Lunch;
 import com.voting.repository.LunchCrudRepository;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -21,11 +22,13 @@ public class LunchService {
         this.lunchCrudRepository = lunchCrudRepository;
     }
 
+    @CacheEvict(value = "lunches", allEntries = true)
     public Lunch create(Lunch lunch) {
         Assert.notNull(lunch, "lunch must be not null");
         return lunchCrudRepository.save(lunch);
     }
 
+    @CacheEvict(value = "lunches", allEntries = true)
     public void delete(int id) {
         checkNotFoundWithId(lunchCrudRepository.delete(id) != 0, id);
     }
@@ -38,6 +41,7 @@ public class LunchService {
         return lunchCrudRepository.findAll(Sort.by(Sort.Direction.DESC, "lunchDate"));
     }
 
+    @CacheEvict(value = "lunches", allEntries = true)
     public void update(Lunch lunch) {
         Assert.notNull(lunch, "lunch must be not null");
         checkNotFoundWithId(lunchCrudRepository.save(lunch), lunch.getId());
@@ -52,14 +56,17 @@ public class LunchService {
         return lunchCrudRepository.getBetweenDates(startDate, endDate);
     }
 
+    @Cacheable("lunches")
     public Lunch getByRestaurantIdAndDate(int id, LocalDate date) {
         return checkNotFoundWithId(lunchCrudRepository.getByRestaurantIdAndDate(id, date), id);
     }
 
+    @CacheEvict(value = "lunches", allEntries = true)
     public void addDishById(int id, int dishId) {
         lunchCrudRepository.addDishById(id, dishId);
     }
 
+    @CacheEvict(value = "lunches", allEntries = true)
     public void deleteDishById(int id, int dishId) {
         checkNotFound(lunchCrudRepository.deleteDishById(id, dishId) != 0, "Lunch id=" + id + ", Dish id=" + dishId);
     }
