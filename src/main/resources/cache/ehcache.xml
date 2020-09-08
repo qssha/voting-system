@@ -7,13 +7,6 @@
 
     <!--<persistence directory="${user.home}/cache-data"/>-->
 
-    <cache-template name="expiryCache">
-        <expiry>
-            <ttl unit="minutes">5</ttl>
-        </expiry>
-        <heap unit="entries">5000</heap>
-    </cache-template>
-
     <cache-template name="singleNonExpiryCache">
         <expiry>
             <none/>
