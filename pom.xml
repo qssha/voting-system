@@ -19,6 +19,8 @@
         <spring-data-jpa.version>2.3.1.RELEASE</spring-data-jpa.version>
         <tomcat.version>9.0.36</tomcat.version>
 
+        <jackson-json.version>2.11.1</jackson-json.version>
+
         <!-- Hibernate -->
         <hibernate.version>5.4.18.Final</hibernate.version>
         <hibernate-validator.version>6.1.5.Final</hibernate-validator.version>
@@ -144,6 +146,13 @@
             <artifactId>javax.servlet-api</artifactId>
             <version>4.0.1</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!--JSON-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-json.version}</version>
         </dependency>
 
         <!-- Logging with SLF4J & LogBack -->
