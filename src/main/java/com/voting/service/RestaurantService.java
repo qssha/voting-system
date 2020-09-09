@@ -1,15 +1,11 @@
 package com.voting.service;
 
-import com.voting.model.Lunch;
 import com.voting.model.Restaurant;
 import com.voting.repository.RestaurantCrudRepository;
-import com.voting.to.RestaurantTo;
-import com.voting.util.ToUtil;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static com.voting.util.ValidationUtil.checkNotFoundWithId;

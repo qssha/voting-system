@@ -141,7 +141,8 @@ public class UserServiceTest extends AbstractServiceTest {
         validateRootCause(() -> userService.create(new User(null, "User", "mail@yandex.ru",
                 "", Role.USER)), ConstraintViolationException.class);
         validateRootCause(() -> userService.create(new User(null, "U", "mail@yandex.ru",
-                "password", Role.USER)), ConstraintViolationException.class);;
+                "password", Role.USER)), ConstraintViolationException.class);
+        ;
         validateRootCause(() -> userService.create(new User(null, "User", "mail.ru",
                 "password", Role.USER)), ConstraintViolationException.class);
     }
