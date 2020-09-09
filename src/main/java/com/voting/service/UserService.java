@@ -84,6 +84,7 @@ public class UserService {
             if (prevVote != null) {
                 vote.setId(prevVote.getId());
             }
+            vote.setVoteDate(voteDateTime.toLocalDate());
             voteCrudRepository.save(vote);
         }
     }
