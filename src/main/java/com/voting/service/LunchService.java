@@ -3,7 +3,7 @@ package com.voting.service;
 import com.voting.model.Lunch;
 import com.voting.repository.LunchCrudRepository;
 import com.voting.to.RestaurantTo;
-import com.voting.util.ToUtil;
+import com.voting.util.MenuUtil;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
@@ -87,6 +87,6 @@ public class LunchService {
     }
 
     public List<RestaurantTo> getAllWithLunchForDate(LocalDate date) {
-        return ToUtil.LunchToRestaurantTo(getByDate(date));
+        return MenuUtil.LunchToRestaurantTo(getByDate(date));
     }
 }

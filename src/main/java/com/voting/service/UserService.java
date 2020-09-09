@@ -4,6 +4,8 @@ import com.voting.model.User;
 import com.voting.model.Vote;
 import com.voting.repository.UserCrudRepository;
 import com.voting.repository.VoteCrudRepository;
+import com.voting.to.UserTo;
+import com.voting.util.UserUtil;
 import com.voting.util.exception.NotFoundException;
 import com.voting.util.exception.VoteException;
 import org.springframework.cache.annotation.CacheEvict;
@@ -99,5 +101,12 @@ public class UserService {
 
     private boolean checkLunchForDate(int restaurantId, LocalDate date) {
         return lunchService.getByDate(date).stream().anyMatch(x -> x.getRestaurant().getId() == restaurantId);
+    }
+
+    @Transactional
+    @CacheEvict(value = "users", allEntries = true)
+    public void update(UserTo userTo) {
+        User user = get(userTo.getId());
+        UserUtil.updateFromTo(user, userTo);
     }
 }

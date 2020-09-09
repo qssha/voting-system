@@ -8,7 +8,7 @@ import com.voting.to.RestaurantTo;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class ToUtil {
+public class MenuUtil {
     public static List<RestaurantTo> LunchToRestaurantTo(List<Lunch> lunches) {
         return lunches.stream().map(x -> new RestaurantTo(x.getRestaurant().getId(), x.getRestaurant().getName(),
                 dishToDishTo(x.getDishes()))).collect(Collectors.toList());

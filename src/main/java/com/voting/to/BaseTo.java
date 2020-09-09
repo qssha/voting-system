@@ -1,6 +1,8 @@
 package com.voting.to;
 
-public abstract class BaseTo {
+import com.voting.HasId;
+
+public abstract class BaseTo implements HasId {
     protected Integer id;
 
     public BaseTo() {

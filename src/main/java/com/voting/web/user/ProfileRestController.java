@@ -1,6 +1,7 @@
 package com.voting.web.user;
 
 import com.voting.model.User;
+import com.voting.to.UserTo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +27,7 @@ public class ProfileRestController extends AbstractUserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user) {
+    public void update(@RequestBody UserTo user) {
         super.update(user, authUserId());
     }
 }

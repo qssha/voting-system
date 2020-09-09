@@ -2,6 +2,7 @@ package com.voting.web.user;
 
 import com.voting.model.User;
 import com.voting.service.UserService;
+import com.voting.to.UserTo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,12 @@ public abstract class AbstractUserController {
     }
 
     public void update(User user, int id) {
+        log.info("update {} with id={}", user, id);
+        assureIdConsistent(user, id);
+        userService.update(user);
+    }
+
+    public void update(UserTo user, int id) {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
         userService.update(user);
