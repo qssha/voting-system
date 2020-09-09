@@ -1,5 +1,7 @@
 package com.voting.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ public class Lunch extends AbstractBaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id")
     @NotNull
+    @JsonBackReference
     private Restaurant restaurant;
 
     @ManyToMany(fetch = FetchType.LAZY)
