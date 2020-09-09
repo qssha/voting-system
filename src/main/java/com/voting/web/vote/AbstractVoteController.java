@@ -1,6 +1,7 @@
 package com.voting.web.vote;
 
 import com.voting.model.Vote;
+import com.voting.service.LunchService;
 import com.voting.service.RestaurantService;
 import com.voting.service.UserService;
 import com.voting.to.RestaurantTo;
@@ -19,7 +20,7 @@ public abstract class AbstractVoteController {
     private UserService userService;
 
     @Autowired
-    private RestaurantService restaurantService;
+    private LunchService lunchService;
 
     public void vote(int id, int restaurantId, LocalDateTime dateTime) {
         log.info("user {} vote for Restaurant {} on date {}", id, restaurantId, dateTime.toString());
@@ -28,7 +29,7 @@ public abstract class AbstractVoteController {
 
     public List<RestaurantTo> getRestaurants(LocalDate date) {
         log.info("get lunches for date {}", date.toString());
-        return restaurantService.getAllWithLunchForDate(date);
+        return lunchService.getAllWithLunchForDate(date);
     }
 
     public List<Vote> getAllVotes(int id) {

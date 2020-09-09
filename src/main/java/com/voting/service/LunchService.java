@@ -2,10 +2,13 @@ package com.voting.service;
 
 import com.voting.model.Lunch;
 import com.voting.repository.LunchCrudRepository;
+import com.voting.to.RestaurantTo;
+import com.voting.util.ToUtil;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.time.LocalDate;
@@ -19,8 +22,11 @@ public class LunchService {
 
     private final LunchCrudRepository lunchCrudRepository;
 
-    public LunchService(LunchCrudRepository lunchCrudRepository) {
+    private final RestaurantService restaurantService;
+
+    public LunchService(LunchCrudRepository lunchCrudRepository, RestaurantService restaurantService) {
         this.lunchCrudRepository = lunchCrudRepository;
+        this.restaurantService = restaurantService;
     }
 
     @CacheEvict(value = "lunches", allEntries = true)
@@ -70,5 +76,17 @@ public class LunchService {
     @CacheEvict(value = "lunches", allEntries = true)
     public void deleteDishById(int id, int dishId) {
         checkNotFound(lunchCrudRepository.deleteDishById(id, dishId) != 0, "Lunch id=" + id + ", Dish id=" + dishId);
+    }
+
+    @Transactional
+    @CacheEvict(value = "lunches", allEntries = true)
+    public Lunch createLunchByRestaurantId(Lunch lunch, int restaurantId) {
+        Assert.notNull(lunch, "lunch must be not null");
+        lunch.setRestaurant(restaurantService.get(restaurantId));
+        return lunchCrudRepository.save(lunch);
+    }
+
+    public List<RestaurantTo> getAllWithLunchForDate(LocalDate date) {
+        return ToUtil.LunchToRestaurantTo(getByDate(date));
     }
 }

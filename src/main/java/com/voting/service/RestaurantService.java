@@ -19,11 +19,8 @@ public class RestaurantService {
 
     private final RestaurantCrudRepository restaurantCrudRepository;
 
-    private final LunchService  lunchService;
-
-    public RestaurantService(RestaurantCrudRepository restaurantCrudRepository, LunchService lunchService) {
+    public RestaurantService(RestaurantCrudRepository restaurantCrudRepository) {
         this.restaurantCrudRepository = restaurantCrudRepository;
-        this.lunchService = lunchService;
     }
 
     public Restaurant create(Restaurant restaurant) {
@@ -50,9 +47,5 @@ public class RestaurantService {
 
     public Restaurant getWithLunches(int id) {
         return checkNotFoundWithId(restaurantCrudRepository.getWithLunches(id), id);
-    }
-
-    public List<RestaurantTo> getAllWithLunchForDate(LocalDate date) {
-        return ToUtil.LunchToRestaurantTo(lunchService.getByDate(date));
     }
 }
