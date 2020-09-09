@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class AdminLunchController extends AbstractLunchController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Lunch> createWithLocation(@RequestBody Lunch lunch) {
+    public ResponseEntity<Lunch> createWithLocation(@Valid @RequestBody Lunch lunch) {
         Lunch created = super.create(lunch);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -39,7 +40,7 @@ public class AdminLunchController extends AbstractLunchController {
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Lunch lunch, @PathVariable int id) {
+    public void update(@Valid @RequestBody Lunch lunch, @PathVariable int id) {
         super.update(lunch, id);
     }
 

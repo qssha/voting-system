@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class AdminDishController extends AbstractDishController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> createWithLocation(Dish dish) {
+    public ResponseEntity<Dish> createWithLocation(@Valid @RequestBody Dish dish) {
         Dish created = super.create(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -40,7 +41,7 @@ public class AdminDishController extends AbstractDishController {
     @Override
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Dish dish, @PathVariable int id) {
+    public void update(@Valid @RequestBody Dish dish, @PathVariable int id) {
         super.update(dish, id);
     }
 
