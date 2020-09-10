@@ -1,5 +1,6 @@
 package com.voting.service;
 
+import com.voting.model.Dish;
 import com.voting.model.Lunch;
 import com.voting.repository.LunchCrudRepository;
 import com.voting.to.RestaurantTo;
@@ -20,12 +21,13 @@ import static com.voting.util.ValidationUtil.*;
 public class LunchService {
 
     private final LunchCrudRepository lunchCrudRepository;
-
     private final RestaurantService restaurantService;
+    private final DishService dishService;
 
-    public LunchService(LunchCrudRepository lunchCrudRepository, RestaurantService restaurantService) {
+    public LunchService(LunchCrudRepository lunchCrudRepository, RestaurantService restaurantService, DishService dishService) {
         this.lunchCrudRepository = lunchCrudRepository;
         this.restaurantService = restaurantService;
+        this.dishService = dishService;
     }
 
     @CacheEvict(value = "lunches", allEntries = true)
@@ -35,13 +37,13 @@ public class LunchService {
     }
 
     @CacheEvict(value = "lunches", allEntries = true)
-    public void delete(int id, int restaurantId) {
-        checkNotFoundWithMsg(lunchCrudRepository.deleteByIdAndRestaurantId(id, restaurantId) != 0,
+    public void delete(int restaurantId, int id) {
+        checkNotFoundWithMsg(lunchCrudRepository.deleteByRestaurantIdAndId(restaurantId, id) != 0,
                 String.format("Not found lunch id=%d for restaurant id=%d", id, restaurantId));
     }
 
-    public Lunch get(int id, int restaurantId) {
-        return checkNotFoundWithMsg(lunchCrudRepository.getByIdAndRestaurantId(id, restaurantId).orElse(null),
+    public Lunch get(int restaurantId, int id) {
+        return checkNotFoundWithMsg(lunchCrudRepository.getByRestaurantIdAndId(restaurantId, id).orElse(null),
                 String.format("Not found lunch id=%d for restaurant id=%d", id, restaurantId));
     }
 
@@ -69,13 +71,17 @@ public class LunchService {
         return checkNotFoundWithId(lunchCrudRepository.getByRestaurantIdAndDate(id, date), id);
     }
 
+    @Transactional
     @CacheEvict(value = "lunches", allEntries = true)
-    public void addDishById(int id, int dishId) {
+    public void addDishById(int restaurantId, int id, int dishId) {
+        checkLunchByRestaurantId(restaurantId, id);
         lunchCrudRepository.addDishById(id, dishId);
     }
 
+    @Transactional
     @CacheEvict(value = "lunches", allEntries = true)
-    public void deleteDishById(int id, int dishId) {
+    public void deleteDishById(int restaurantId, int id, int dishId) {
+        checkLunchByRestaurantId(restaurantId, id);
         checkNotFound(lunchCrudRepository.deleteDishById(id, dishId) != 0, "Lunch id=" + id + ", Dish id=" + dishId);
     }
 
@@ -85,6 +91,21 @@ public class LunchService {
         Assert.notNull(lunch, "lunch must be not null");
         lunch.setRestaurant(restaurantService.get(restaurantId));
         return lunchCrudRepository.save(lunch);
+    }
+
+    public void checkLunchByRestaurantId(int restaurantId, int id) {
+        checkNotFound(lunchCrudRepository.getLazyByRestaurantIdAndId(restaurantId, id),
+                String.format("Not found lunch id=%d for restaurant id=%d", id, restaurantId));
+    }
+
+    public List<Lunch> getAllLunchesForRestaurant(int restaurantId) {
+        return lunchCrudRepository.getByRestaurantId(restaurantId);
+    }
+
+    @Transactional
+    public void addDish(int restaurantId, int id, Dish dish) {
+        checkLunchByRestaurantId(restaurantId, id);
+        addDishById(restaurantId, id, dishService.create(dish).getId());
     }
 
     public List<RestaurantTo> getAllWithLunchForDate(LocalDate date) {

@@ -22,7 +22,7 @@ public abstract class AbstractLunchController {
         return lunchService.getAll();
     }
 
-    public Lunch get(int id) {
+    public Lunch get(int id, int restaurantId) {
         log.info("get {}", id);
         //TODO
         //return lunchService.get(id);
@@ -41,7 +41,7 @@ public abstract class AbstractLunchController {
         lunchService.update(lunch);
     }
 
-    public void delete(int id) {
+    public void delete(int restaurantId, int id) {
         log.info("delete {}", id);
         //TODO
         //lunchService.delete(id);
@@ -49,11 +49,11 @@ public abstract class AbstractLunchController {
 
     public void addDishById(int id, int dishId) {
         log.info("to lunch {} add dish {}", id, dishId);
-        lunchService.addDishById(id, dishId);
+        //lunchService.addDishById(id, dishId);
     }
 
     public void deleteDishById(int id, int dishId) {
         log.info("from lunch {} delete dish {}", id, dishId);
-        lunchService.deleteDishById(id, dishId);
+        //lunchService.deleteDishById(id, dishId);
     }
 }

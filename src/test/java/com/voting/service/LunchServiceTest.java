@@ -1,5 +1,8 @@
 package com.voting.service;
 
+import com.voting.DishTestData;
+import com.voting.LunchTestData;
+import com.voting.model.Dish;
 import com.voting.model.Lunch;
 import com.voting.util.exception.NotFoundException;
 import org.junit.jupiter.api.Test;
@@ -25,8 +28,8 @@ public class LunchServiceTest extends AbstractServiceTest {
 
     @Test
     void delete() throws Exception {
-        lunchService.delete(FIRST_LUNCH_ID, FIRST_RESTAURANT_ID);
-        assertThrows(NotFoundException.class, () -> lunchService.get(FIRST_LUNCH_ID, FIRST_RESTAURANT_ID));
+        lunchService.delete(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID);
+        assertThrows(NotFoundException.class, () -> lunchService.get(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID));
     }
 
     @Test
@@ -36,7 +39,7 @@ public class LunchServiceTest extends AbstractServiceTest {
         Lunch newLunch = getNew();
         newLunch.setId(newId);
         LUNCH_MATCHER.assertMatch(created, newLunch);
-        LUNCH_MATCHER.assertMatch(lunchService.get(newId, created.getRestaurant().getId()), newLunch);
+        LUNCH_MATCHER.assertMatch(lunchService.get(created.getRestaurant().getId(), newId), newLunch);
     }
 
     @Test
@@ -47,26 +50,26 @@ public class LunchServiceTest extends AbstractServiceTest {
 
     @Test
     void deleteNotFound() throws Exception {
-        assertThrows(NotFoundException.class, () -> lunchService.delete(NOT_FOUND, FIRST_RESTAURANT_ID));
+        assertThrows(NotFoundException.class, () -> lunchService.delete(FIRST_RESTAURANT_ID, NOT_FOUND));
     }
 
     @Test
     void get() throws Exception {
-        Lunch lunch = lunchService.get(FIRST_LUNCH_ID, FIRST_RESTAURANT_ID);
+        Lunch lunch = lunchService.get(FIRST_RESTAURANT_ID,FIRST_LUNCH_ID);
         LUNCH_MATCHER.assertMatch(lunch, FIRST_LUNCH);
     }
 
     @Test
     void getNotFound() throws Exception {
-        assertThrows(NotFoundException.class, () -> lunchService.get(NOT_FOUND, FIRST_RESTAURANT_ID));
+        assertThrows(NotFoundException.class, () -> lunchService.get(FIRST_RESTAURANT_ID, NOT_FOUND));
     }
 
     @Test
     void update() throws Exception {
-        FIRST_LUNCH.getDishes().add(NINTH_DISH);
-        lunchService.update(FIRST_LUNCH);
-        DISH_MATCHER.assertMatch(lunchService.get(FIRST_LUNCH_ID, FIRST_RESTAURANT_ID).getDishes(),
-                FIRST_DISH, SECOND_DISH, THIRD_DISH, NINTH_DISH);
+        Lunch updated = LunchTestData.getUpdated();
+        lunchService.update(updated);
+        DISH_MATCHER.assertMatch(lunchService.get(updated.getRestaurant().getId(), updated.getId()).getDishes(),
+                FIRST_DISH, SECOND_DISH, THIRD_DISH, FOURTH_DISH);
     }
 
     @Test
@@ -95,26 +98,28 @@ public class LunchServiceTest extends AbstractServiceTest {
 
     @Test
     void addDishById() throws Exception {
-        lunchService.addDishById(FIRST_LUNCH_ID, NINTH_DISH_ID);
-        Lunch lunch = lunchService.get(FIRST_LUNCH_ID, FIRST_RESTAURANT_ID);
+        lunchService.addDishById(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID, NINTH_DISH_ID);
+        Lunch lunch = lunchService.get(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID);
         DISH_MATCHER.assertMatch(lunch.getDishes(), FIRST_DISH, SECOND_DISH, THIRD_DISH, NINTH_DISH);
     }
 
     @Test
     void addDishThatNotExistById() throws Exception {
-        assertThrows(DataAccessException.class, () -> lunchService.addDishById(FIRST_LUNCH_ID, NOT_FOUND));
+        assertThrows(DataAccessException.class,
+                () -> lunchService.addDishById(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID, NOT_FOUND));
     }
 
     @Test
     void deleteDishById() throws Exception {
-        lunchService.deleteDishById(FIRST_LUNCH_ID, FIRST_DISH_ID);
-        Lunch lunch = lunchService.get(FIRST_LUNCH_ID, FIRST_RESTAURANT_ID);
+        lunchService.deleteDishById(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID, FIRST_DISH_ID);
+        Lunch lunch = lunchService.get(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID);
         DISH_MATCHER.assertMatch(lunch.getDishes(), SECOND_DISH, THIRD_DISH);
     }
 
     @Test
     void deleteDishByNotFound() throws Exception {
-        assertThrows(NotFoundException.class, () -> lunchService.deleteDishById(FIRST_LUNCH_ID, NOT_FOUND));
+        assertThrows(NotFoundException.class,
+                () -> lunchService.deleteDishById(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID, NOT_FOUND));
     }
 
     @Test
@@ -125,5 +130,36 @@ public class LunchServiceTest extends AbstractServiceTest {
                 null, FIRST_RESTAURANT)), ConstraintViolationException.class);
         validateRootCause(() -> lunchService.create(new Lunch(null,
                 LocalDate.of(2020, 8, 31), null)), ConstraintViolationException.class);
+    }
+
+    @Test
+    void createLunchByRestaurantId() throws Exception {
+        Lunch emptyNewLunch = getNewEmpty();
+        Lunch created = lunchService.createLunchByRestaurantId(emptyNewLunch, FIRST_RESTAURANT_ID);
+        emptyNewLunch.setId(created.getId());
+        LUNCH_MATCHER.assertMatch(lunchService.get(FIRST_RESTAURANT_ID, created.getId()), emptyNewLunch);
+    }
+
+    @Test
+    void checkLunchByRestaurantId() throws Exception {
+        assertThrows(NotFoundException.class,
+                () -> lunchService.checkLunchByRestaurantId(FIRST_RESTAURANT_ID, NOT_FOUND));
+    }
+
+    @Test
+    void getAllLunchesForRestaurant() throws Exception {
+        List<Lunch> all = lunchService.getAllLunchesForRestaurant(FIRST_RESTAURANT_ID);
+        LUNCH_MATCHER.assertMatch(all, FIRST_LUNCH);
+    }
+
+    @Test
+    void addDish() throws Exception {
+        Dish newDish = DishTestData.getNew();
+        lunchService.addDish(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID, newDish);
+        Lunch lunch = lunchService.get(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID);
+        LUNCH_MATCHER.assertMatch(lunch, FIRST_LUNCH);
+        List<Dish> dishes = lunch.getDishes();
+        newDish.setId(dishes.get(dishes.size() - 1).getId());
+        DISH_MATCHER.assertMatch(lunch.getDishes(), FIRST_DISH, SECOND_DISH, THIRD_DISH, newDish);
     }
 }

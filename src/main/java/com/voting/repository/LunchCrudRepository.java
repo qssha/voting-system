@@ -18,7 +18,7 @@ public interface LunchCrudRepository extends JpaRepository<Lunch, Integer> {
     @Transactional
     @Modifying
     @Query("DELETE FROM Lunch l WHERE l.id=:id AND l.restaurant.id=:restaurantId")
-    int deleteByIdAndRestaurantId(@Param("id") int id, @Param("restaurantId") int restaurantId);
+    int deleteByRestaurantIdAndId(@Param("restaurantId") int restaurantId, @Param("id") int id);
 
     //EAGER associations cannot be fetched lazily, so we are using LAZY by default
     //Using EntityGraph to fetch restaurant and dishes
@@ -38,7 +38,13 @@ public interface LunchCrudRepository extends JpaRepository<Lunch, Integer> {
     Lunch getByRestaurantIdAndDate(@Param("id") int id, @Param("date") LocalDate date);
 
     @EntityGraph(attributePaths = {"restaurant", "dishes"}, type = EntityGraph.EntityGraphType.LOAD)
-    Optional<Lunch> getByIdAndRestaurantId(int id, int restaurantId);
+    Optional<Lunch> getByRestaurantIdAndId(int restaurantId, int id);
+
+    @EntityGraph(attributePaths = {"restaurant", "dishes"}, type = EntityGraph.EntityGraphType.LOAD)
+    List<Lunch> getByRestaurantId(int restaurantId);
+
+    @Query("SELECT l from Lunch l WHERE l.id=:id AND l.restaurant.id=:restaurantId")
+    Lunch getLazyByRestaurantIdAndId(@Param("restaurantId") int restaurantId, @Param("id") int id);
 
     @Transactional
     @Modifying

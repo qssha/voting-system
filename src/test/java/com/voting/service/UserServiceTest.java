@@ -19,7 +19,7 @@ import static com.voting.UserTestData.NOT_FOUND;
 import static com.voting.UserTestData.getNew;
 import static com.voting.UserTestData.*;
 import static com.voting.VoteTestData.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTest extends AbstractServiceTest {
 
@@ -145,5 +145,11 @@ public class UserServiceTest extends AbstractServiceTest {
         ;
         validateRootCause(() -> userService.create(new User(null, "User", "mail.ru",
                 "password", Role.USER)), ConstraintViolationException.class);
+    }
+
+    @Test
+    void checkLunchForDate() throws Exception {
+        assertTrue(userService.checkLunchForDate(100000, LocalDate.of(2020, 8, 30)));
+        assertFalse(userService.checkLunchForDate(100000, LocalDate.of(2020, 8, 31)));
     }
 }

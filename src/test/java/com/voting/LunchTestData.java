@@ -25,7 +25,11 @@ public class LunchTestData {
             LocalDate.parse("2020-08-31"), THIRD_RESTAURANT, SEVENTH_DISH, EIGHTH_DISH, NINTH_DISH);
 
     public static Lunch getNew() {
-        return new Lunch(null, LocalDate.parse("2020-09-01"), THIRD_RESTAURANT, SEVENTH_DISH, EIGHTH_DISH, NINTH_DISH);
+        return new Lunch(null, LocalDate.of(2020, 9, 1), THIRD_RESTAURANT, SEVENTH_DISH, EIGHTH_DISH, NINTH_DISH);
+    }
+
+    public static Lunch getNewEmpty() {
+        return new Lunch(null, LocalDate.of(2020,9, 1));
     }
 
     public static Lunch getUpdated() {

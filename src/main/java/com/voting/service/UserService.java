@@ -99,7 +99,7 @@ public class UserService {
         return voteCrudRepository.getAllByUserFK(id);
     }
 
-    private boolean checkLunchForDate(int restaurantId, LocalDate date) {
+    public boolean checkLunchForDate(int restaurantId, LocalDate date) {
         return lunchService.getByDate(date).stream().anyMatch(x -> x.getRestaurant().getId() == restaurantId);
     }
 

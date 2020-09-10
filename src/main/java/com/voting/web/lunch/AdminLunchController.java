@@ -15,20 +15,20 @@ import java.util.List;
 @RequestMapping(value = AdminLunchController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminLunchController extends AbstractLunchController {
 
-    public static final String REST_URL = "/rest/admin/lunches";
+    public static final String REST_URL = "/rest/admin/restaurants";
 
-    @GetMapping
+    @GetMapping("/lunches")
     public List<Lunch> getAll() {
         return super.getAll();
     }
 
     @Override
-    @GetMapping("/{id}")
-    public Lunch get(@PathVariable int id) {
-        return super.get(id);
+    @GetMapping("/{restaurantId}/lunches/{id}")
+    public Lunch get(@PathVariable int restaurantId, @PathVariable int id) {
+        return super.get(restaurantId, id);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+/*    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Lunch> createWithLocation(@Valid @RequestBody Lunch lunch) {
         Lunch created = super.create(lunch);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -42,16 +42,16 @@ public class AdminLunchController extends AbstractLunchController {
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Lunch lunch, @PathVariable int id) {
         super.update(lunch, id);
-    }
+    }*/
 
     @Override
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{restaurantId}/lunches/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
-        super.delete(id);
+    public void delete(@PathVariable int restaurantId, @PathVariable int id) {
+        super.delete(restaurantId, id);
     }
 
-    @Override
+/*    @Override
     @PutMapping("/{id}/dish/{dishId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void addDishById(@PathVariable int id, @PathVariable int dishId) {
@@ -62,5 +62,5 @@ public class AdminLunchController extends AbstractLunchController {
     @DeleteMapping("/{id}/dish/{dishId}")
     public void deleteDishById(@PathVariable int id, @PathVariable int dishId) {
         super.deleteDishById(id, dishId);
-    }
+    }*/
 }

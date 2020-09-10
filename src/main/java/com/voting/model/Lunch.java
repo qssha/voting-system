@@ -23,13 +23,18 @@ public class Lunch extends AbstractBaseEntity {
     @JsonBackReference
     private Restaurant restaurant;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(name = "dishes_lunches",
             joinColumns = @JoinColumn(name = "lunch_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id"))
     List<Dish> dishes;
 
     public Lunch() {
+    }
+
+    public Lunch(Integer id, @NotNull LocalDate lunchDate) {
+        super(id);
+        this.lunchDate = lunchDate;
     }
 
     public Lunch(Integer id, LocalDate lunchDate, Restaurant restaurant) {
