@@ -8,17 +8,20 @@ import com.voting.service.LunchService;
 import com.voting.util.exception.NotFoundException;
 import com.voting.web.AbstractControllerTest;
 import com.voting.web.json.JsonUtil;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.voting.DishTestData.*;
 import static com.voting.LunchTestData.*;
 import static com.voting.RestaurantTestData.FIRST_RESTAURANT_ID;
+import static com.voting.RestaurantTestData.SECOND_RESTAURANT_ID;
 import static com.voting.TestUtil.readFromJson;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -63,10 +66,11 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
 
     @Test
     void createWithLocation() throws Exception {
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + FIRST_RESTAURANT_ID + "/lunches"))
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + SECOND_RESTAURANT_ID + "/lunches"))
                 .andExpect(status().isCreated());
         Lunch created = readFromJson(action, Lunch.class);
-        //TODO TIME MOCK AND LUNCH COMPARATOR
+        Assertions.assertEquals(LocalDate.of(2020, 8, 30), created.getLunchDate());
+        Assertions.assertNull(created.getDishes());
     }
 
     @Test

@@ -3,6 +3,7 @@ package com.voting.web.lunch;
 import com.voting.model.Dish;
 import com.voting.model.Lunch;
 import com.voting.web.dish.AdminDishController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -18,7 +20,13 @@ import java.util.List;
 @RequestMapping(value = AdminLunchController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminLunchController extends AbstractLunchController {
 
+    private final Clock clock;
+
     public static final String REST_URL = "/rest/admin/restaurants";
+
+    public AdminLunchController(Clock clock) {
+        this.clock = clock;
+    }
 
     @GetMapping("/lunches")
     public List<Lunch> getAll() {
@@ -39,7 +47,7 @@ public class AdminLunchController extends AbstractLunchController {
 
     @PostMapping(value = "/{restaurantId}/lunches")
     public ResponseEntity<Lunch> createWithLocation(@PathVariable int restaurantId) {
-        Lunch created = super.create(new Lunch(LocalDate.now()), restaurantId);
+        Lunch created = super.create(new Lunch(LocalDate.now(clock)), restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/" + restaurantId + "/lunches/{id}")
                 .buildAndExpand(created.getId()).toUri();

@@ -14,7 +14,8 @@ import javax.annotation.PostConstruct;
 
 @SpringJUnitWebConfig(locations = {
         "classpath:spring/spring-mvc.xml",
-        "classpath:spring/spring-db.xml"
+        "classpath:spring/spring-db.xml",
+        "classpath:spring/spring-timemock.xml"
 })
 @Transactional
 public abstract class AbstractControllerTest {
