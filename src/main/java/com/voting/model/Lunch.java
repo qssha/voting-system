@@ -32,6 +32,10 @@ public class Lunch extends AbstractBaseEntity {
     public Lunch() {
     }
 
+    public Lunch(@NotNull LocalDate lunchDate) {
+        this.lunchDate = lunchDate;
+    }
+
     public Lunch(Integer id, @NotNull LocalDate lunchDate) {
         super(id);
         this.lunchDate = lunchDate;

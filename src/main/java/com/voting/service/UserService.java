@@ -76,11 +76,11 @@ public class UserService {
         //checking lunch for this date by restaurant id, lunches will be cached
         if (!checkLunchForDate(vote.getRestaurantFK(), voteDateTime.toLocalDate())) {
             throw new NotFoundException("Restaurant with id=" + vote.getRestaurantFK()
-                    + " doesn't offer lunch for date=" + voteDateTime.toLocalDate().toString());
+                    + " does not offer lunch for date=" + voteDateTime.toLocalDate().toString());
         }
 
         if (voteDateTime.toLocalTime().isAfter(endOfVoteTime)) {
-            throw new VoteException("Can't re-vote after " + endOfVoteTime.toString());
+            throw new VoteException("Can not vote after " + endOfVoteTime.toString());
         } else {
             Vote prevVote = voteCrudRepository.getByUserFKAndVoteDate(vote.getUserFK(), voteDateTime.toLocalDate());
             if (prevVote != null) {

@@ -22,38 +22,34 @@ public abstract class AbstractLunchController {
         return lunchService.getAll();
     }
 
-    public Lunch get(int id, int restaurantId) {
-        log.info("get {}", id);
-        //TODO
-        //return lunchService.get(id);
-        return null;
+    public List<Lunch> getForRestaurant(int restaurantId) {
+        log.info("getAll for {}", restaurantId);
+        return lunchService.getAllLunchesForRestaurant(restaurantId);
     }
 
-    public Lunch create(Lunch lunch) {
-        log.info("create {}", lunch);
+    public Lunch get(int restaurantId, int id) {
+        log.info("restaurant {} get {}", restaurantId, id);
+        return lunchService.get(restaurantId, id);
+    }
+
+    public Lunch create(Lunch lunch, int restaurantId) {
+        log.info("create {} restaurant {}", lunch, restaurantId);
         checkNew(lunch);
-        return lunchService.create(lunch);
-    }
-
-    public void update(Lunch lunch, int id) {
-        log.info("update {}", lunch);
-        assureIdConsistent(lunch, id);
-        lunchService.update(lunch);
+        return lunchService.createLunchByRestaurantId(lunch, restaurantId);
     }
 
     public void delete(int restaurantId, int id) {
-        log.info("delete {}", id);
-        //TODO
-        //lunchService.delete(id);
+        log.info("restaurant {} delete {}", restaurantId, id);
+        lunchService.delete(restaurantId, id);
     }
 
-    public void addDishById(int id, int dishId) {
-        log.info("to lunch {} add dish {}", id, dishId);
-        //lunchService.addDishById(id, dishId);
+    public void addDishById(int restaurantId, int id, int dishId) {
+        log.info("restaurant {}, lunch {} add {}", restaurantId, id, dishId);
+        lunchService.addDishById(restaurantId, id, dishId);
     }
 
-    public void deleteDishById(int id, int dishId) {
-        log.info("from lunch {} delete dish {}", id, dishId);
-        //lunchService.deleteDishById(id, dishId);
+    public void deleteDishById(int restaurantId, int id, int dishId) {
+        log.info("for restaurant {}, lunch {} delete dish {}", restaurantId, id, dishId);
+        lunchService.deleteDishById(restaurantId, id, dishId);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,26 +24,25 @@ public class AdminLunchController extends AbstractLunchController {
     }
 
     @Override
+    @GetMapping("/{restaurantId}/lunches")
+    public List<Lunch> getForRestaurant(@PathVariable int restaurantId) {
+        return super.getForRestaurant(restaurantId);
+    }
+
+    @Override
     @GetMapping("/{restaurantId}/lunches/{id}")
     public Lunch get(@PathVariable int restaurantId, @PathVariable int id) {
         return super.get(restaurantId, id);
     }
 
-/*    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Lunch> createWithLocation(@Valid @RequestBody Lunch lunch) {
-        Lunch created = super.create(lunch);
+    @PostMapping(value = "/{restaurantId}/lunches")
+    public ResponseEntity<Lunch> createWithLocation(@PathVariable int restaurantId) {
+        Lunch created = super.create(new Lunch(LocalDate.now()), restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
-
-    @Override
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody Lunch lunch, @PathVariable int id) {
-        super.update(lunch, id);
-    }*/
 
     @Override
     @DeleteMapping("/{restaurantId}/lunches/{id}")
@@ -51,16 +51,14 @@ public class AdminLunchController extends AbstractLunchController {
         super.delete(restaurantId, id);
     }
 
-/*    @Override
-    @PutMapping("/{id}/dish/{dishId}")
+    @PutMapping("/{restaurantId}/lunches/{id}/dish/{dishId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addDishById(@PathVariable int id, @PathVariable int dishId) {
-        super.addDishById(id, dishId);
+    public void addDishById(@PathVariable int restaurantId, @PathVariable int id, @PathVariable int dishId) {
+        super.addDishById(restaurantId, id, dishId);
     }
 
-    @Override
-    @DeleteMapping("/{id}/dish/{dishId}")
-    public void deleteDishById(@PathVariable int id, @PathVariable int dishId) {
-        super.deleteDishById(id, dishId);
-    }*/
+    @DeleteMapping("/{restaurantId}/lunches/{id}/dish/{dishId}")
+    public void deleteDishById(@PathVariable int restaurantId, @PathVariable int id, @PathVariable int dishId) {
+        super.deleteDishById(restaurantId, id, dishId);
+    }
 }

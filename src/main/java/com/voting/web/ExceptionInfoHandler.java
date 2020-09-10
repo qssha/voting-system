@@ -29,7 +29,13 @@ public class ExceptionInfoHandler {
 
     //  http://stackoverflow.com/a/22358422/548473
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler({NotFoundException.class, VoteException.class})
+    @ExceptionHandler({VoteException.class})
+    public ErrorInfo handleError(HttpServletRequest req, VoteException e) {
+        return logAndGetErrorInfo(req, e, false, VOTE_ERROR);
+    }
+
+    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler({NotFoundException.class})
     public ErrorInfo handleError(HttpServletRequest req, NotFoundException e) {
         return logAndGetErrorInfo(req, e, false, DATA_NOT_FOUND);
     }
