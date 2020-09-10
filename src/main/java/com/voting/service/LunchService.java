@@ -14,8 +14,7 @@ import org.springframework.util.Assert;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.voting.util.ValidationUtil.checkNotFound;
-import static com.voting.util.ValidationUtil.checkNotFoundWithId;
+import static com.voting.util.ValidationUtil.*;
 
 @Service
 public class LunchService {
@@ -36,12 +35,14 @@ public class LunchService {
     }
 
     @CacheEvict(value = "lunches", allEntries = true)
-    public void delete(int id) {
-        checkNotFoundWithId(lunchCrudRepository.delete(id) != 0, id);
+    public void delete(int id, int restaurantId) {
+        checkNotFoundWithMsg(lunchCrudRepository.deleteByIdAndRestaurantId(id, restaurantId) != 0,
+                String.format("Not found lunch id=%d for restaurant id=%d", id, restaurantId));
     }
 
-    public Lunch get(int id) {
-        return checkNotFoundWithId(lunchCrudRepository.findById(id).orElse(null), id);
+    public Lunch get(int id, int restaurantId) {
+        return checkNotFoundWithMsg(lunchCrudRepository.getByIdAndRestaurantId(id, restaurantId).orElse(null),
+                String.format("Not found lunch id=%d for restaurant id=%d", id, restaurantId));
     }
 
     public List<Lunch> getAll() {

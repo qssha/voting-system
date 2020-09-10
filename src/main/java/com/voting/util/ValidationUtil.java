@@ -20,6 +20,17 @@ public class ValidationUtil {
         checkNotFound(found, "id=" + id);
     }
 
+    public static void checkNotFoundWithMsg(boolean found, String msg) {
+        if (!found) {
+            throw new NotFoundException(msg);
+        }
+    }
+
+    public static<T> T checkNotFoundWithMsg(T object, String msg) {
+        checkNotFoundWithMsg(object != null, msg);
+        return object;
+    }
+
     public static <T> T checkNotFound(T object, String msg) {
         checkNotFound(object != null, msg);
         return object;

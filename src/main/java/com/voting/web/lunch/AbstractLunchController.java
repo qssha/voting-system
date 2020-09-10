@@ -24,7 +24,9 @@ public abstract class AbstractLunchController {
 
     public Lunch get(int id) {
         log.info("get {}", id);
-        return lunchService.get(id);
+        //TODO
+        //return lunchService.get(id);
+        return null;
     }
 
     public Lunch create(Lunch lunch) {
@@ -41,7 +43,8 @@ public abstract class AbstractLunchController {
 
     public void delete(int id) {
         log.info("delete {}", id);
-        lunchService.delete(id);
+        //TODO
+        //lunchService.delete(id);
     }
 
     public void addDishById(int id, int dishId) {

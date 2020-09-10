@@ -17,15 +17,12 @@ import java.util.Optional;
 public interface LunchCrudRepository extends JpaRepository<Lunch, Integer> {
     @Transactional
     @Modifying
-    @Query("DELETE FROM Lunch l WHERE l.id=:id")
-    int delete(@Param("id") int id);
+    @Query("DELETE FROM Lunch l WHERE l.id=:id AND l.restaurant.id=:restaurantId")
+    int deleteByIdAndRestaurantId(@Param("id") int id, @Param("restaurantId") int restaurantId);
 
     //EAGER associations cannot be fetched lazily, so we are using LAZY by default
     //Using EntityGraph to fetch restaurant and dishes
     //https://stackoverflow.com/questions/17847289/ignore-a-fetchtype-eager-in-a-relationship
-    @EntityGraph(attributePaths = {"restaurant", "dishes"}, type = EntityGraph.EntityGraphType.LOAD)
-    Optional<Lunch> findById(int id);
-
     @EntityGraph(attributePaths = {"restaurant", "dishes"}, type = EntityGraph.EntityGraphType.LOAD)
     List<Lunch> findAll(Sort sort);
 
@@ -39,6 +36,9 @@ public interface LunchCrudRepository extends JpaRepository<Lunch, Integer> {
     @EntityGraph(attributePaths = {"restaurant", "dishes"}, type = EntityGraph.EntityGraphType.LOAD)
     @Query("SELECT l from Lunch l WHERE l.lunchDate=:date AND l.restaurant.id=:id")
     Lunch getByRestaurantIdAndDate(@Param("id") int id, @Param("date") LocalDate date);
+
+    @EntityGraph(attributePaths = {"restaurant", "dishes"}, type = EntityGraph.EntityGraphType.LOAD)
+    Optional<Lunch> getByIdAndRestaurantId(int id, int restaurantId);
 
     @Transactional
     @Modifying
