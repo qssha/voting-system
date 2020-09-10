@@ -39,8 +39,10 @@ public class RestaurantTo extends BaseTo {
 
     @Override
     public String toString() {
-        return "Restaurant{" +
+        return "RestaurantTo{" +
                 "name='" + name + '\'' +
+                ", dishes=" + dishes +
+                ", id=" + id +
                 '}';
     }
 }
