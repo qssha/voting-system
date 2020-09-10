@@ -1,5 +1,6 @@
 package com.voting.web.lunch;
 
+import com.voting.model.Dish;
 import com.voting.model.Lunch;
 import com.voting.service.LunchService;
 import org.slf4j.Logger;
@@ -51,5 +52,10 @@ public abstract class AbstractLunchController {
     public void deleteDishById(int restaurantId, int id, int dishId) {
         log.info("for restaurant {}, lunch {} delete dish {}", restaurantId, id, dishId);
         lunchService.deleteDishById(restaurantId, id, dishId);
+    }
+
+    public Dish addDish(int restaurantId, int id, Dish dish) {
+        log.info("restaurant {}, lunch {} add {}", restaurantId, id, dish);
+        return lunchService.addDish(restaurantId, id, dish);
     }
 }

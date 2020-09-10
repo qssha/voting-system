@@ -155,11 +155,11 @@ public class LunchServiceTest extends AbstractServiceTest {
     @Test
     void addDish() throws Exception {
         Dish newDish = DishTestData.getNew();
-        lunchService.addDish(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID, newDish);
+        Dish created = lunchService.addDish(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID, newDish);
         Lunch lunch = lunchService.get(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID);
         LUNCH_MATCHER.assertMatch(lunch, FIRST_LUNCH);
-        List<Dish> dishes = lunch.getDishes();
-        newDish.setId(dishes.get(dishes.size() - 1).getId());
+        newDish.setId(created.getId());
+        DISH_MATCHER.assertMatch(created, newDish);
         DISH_MATCHER.assertMatch(lunch.getDishes(), FIRST_DISH, SECOND_DISH, THIRD_DISH, newDish);
     }
 }

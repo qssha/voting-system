@@ -1,6 +1,8 @@
 package com.voting.web.lunch;
 
+import com.voting.model.Dish;
 import com.voting.model.Lunch;
+import com.voting.web.dish.AdminDishController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +41,7 @@ public class AdminLunchController extends AbstractLunchController {
     public ResponseEntity<Lunch> createWithLocation(@PathVariable int restaurantId) {
         Lunch created = super.create(new Lunch(LocalDate.now()), restaurantId);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_URL + "/{id}")
+                .path(REST_URL + "/" + restaurantId + "/lunches/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
@@ -55,6 +57,15 @@ public class AdminLunchController extends AbstractLunchController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void addDishById(@PathVariable int restaurantId, @PathVariable int id, @PathVariable int dishId) {
         super.addDishById(restaurantId, id, dishId);
+    }
+
+    @PostMapping(value = "/{restaurantId}/lunches/{id}/dish", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Dish> addDishWithLocation(@PathVariable int restaurantId, @PathVariable int id, @Valid @RequestBody Dish dish) {
+        Dish created = super.addDish(restaurantId, id, dish);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(AdminDishController.REST_URL + "/{id}")
+                .buildAndExpand(created.getId()).toUri();
+        return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
     @DeleteMapping("/{restaurantId}/lunches/{id}/dish/{dishId}")

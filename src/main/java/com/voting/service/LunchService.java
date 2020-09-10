@@ -103,9 +103,11 @@ public class LunchService {
     }
 
     @Transactional
-    public void addDish(int restaurantId, int id, Dish dish) {
+    public Dish addDish(int restaurantId, int id, Dish dish) {
         checkLunchByRestaurantId(restaurantId, id);
-        addDishById(restaurantId, id, dishService.create(dish).getId());
+        Dish newDish = dishService.create(dish);
+        addDishById(restaurantId, id, newDish.getId());
+        return newDish;
     }
 
     public List<RestaurantTo> getAllWithLunchForDate(LocalDate date) {
