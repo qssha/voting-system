@@ -75,7 +75,7 @@ public class LunchServiceTest extends AbstractServiceTest {
     @Test
     void getAll() throws Exception {
         List<Lunch> all = lunchService.getAll();
-        LUNCH_MATCHER.assertMatch(all, SECOND_LUNCH, THIRD_LUNCH, FIRST_LUNCH);
+        LUNCH_MATCHER.assertMatch(all, getAllSorted());
     }
 
     @Test

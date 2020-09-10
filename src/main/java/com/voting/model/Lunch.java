@@ -58,7 +58,7 @@ public class Lunch extends AbstractBaseEntity {
         this.id = lunch.getId();
         this.lunchDate = lunch.getLunchDate();
         this.restaurant = lunch.getRestaurant();
-        this.dishes = lunch.getDishes();
+        this.dishes = new ArrayList<>(lunch.getDishes());
     }
 
     public LocalDate getLunchDate() {

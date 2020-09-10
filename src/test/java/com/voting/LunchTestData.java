@@ -3,6 +3,7 @@ package com.voting;
 import com.voting.model.Lunch;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static com.voting.DishTestData.*;
 import static com.voting.RestaurantTestData.*;
@@ -10,6 +11,8 @@ import static com.voting.model.AbstractBaseEntity.START_SEQ;
 
 public class LunchTestData {
     public static final TestMatcher<Lunch> LUNCH_MATCHER = TestMatcher.usingFieldsComparator(Lunch.class, "dishes");
+    public static final TestMatcher<Lunch> LUNCH_MATCHER_ID_DATE_DISHES = TestMatcher.usingFieldsComparator(Lunch.class, "restaurant");
+
 
     public static final int NOT_FOUND = 10;
 
@@ -26,6 +29,10 @@ public class LunchTestData {
 
     public static Lunch getNew() {
         return new Lunch(null, LocalDate.of(2020, 9, 1), THIRD_RESTAURANT, SEVENTH_DISH, EIGHTH_DISH, NINTH_DISH);
+    }
+
+    public static List<Lunch> getAllSorted() {
+        return List.of(SECOND_LUNCH, THIRD_LUNCH, FIRST_LUNCH);
     }
 
     public static Lunch getNewEmpty() {

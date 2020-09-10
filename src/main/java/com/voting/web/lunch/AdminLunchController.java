@@ -69,6 +69,7 @@ public class AdminLunchController extends AbstractLunchController {
     }
 
     @DeleteMapping("/{restaurantId}/lunches/{id}/dish/{dishId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDishById(@PathVariable int restaurantId, @PathVariable int id, @PathVariable int dishId) {
         super.deleteDishById(restaurantId, id, dishId);
     }
