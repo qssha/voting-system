@@ -26,7 +26,7 @@ public class ValidationUtil {
         }
     }
 
-    public static<T> T checkNotFoundWithMsg(T object, String msg) {
+    public static <T> T checkNotFoundWithMsg(T object, String msg) {
         checkNotFoundWithMsg(object != null, msg);
         return object;
     }

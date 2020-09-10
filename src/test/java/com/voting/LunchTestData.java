@@ -36,7 +36,7 @@ public class LunchTestData {
     }
 
     public static Lunch getNewEmpty() {
-        return new Lunch(LocalDate.of(2020,9, 1));
+        return new Lunch(LocalDate.of(2020, 9, 1));
     }
 
     public static Lunch getUpdated() {

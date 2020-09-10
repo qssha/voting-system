@@ -1,6 +1,5 @@
 package com.voting.web.restaurant;
 
-import com.voting.model.Dish;
 import com.voting.model.Restaurant;
 import com.voting.service.RestaurantService;
 import com.voting.util.exception.NotFoundException;

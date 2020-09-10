@@ -1,10 +1,8 @@
 package com.voting.web.vote;
 
 import com.voting.VoteTestData;
-import com.voting.service.UserService;
 import com.voting.web.AbstractControllerTest;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -18,9 +16,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class VoteControllerTest extends AbstractControllerTest {
     private static final String REST_URL = VoteRestController.REST_URL + "/";
-
-    @Autowired
-    private UserService userService;
 
     @Test
     void getRestaurants() throws Exception {

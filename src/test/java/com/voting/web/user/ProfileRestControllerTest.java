@@ -1,6 +1,5 @@
 package com.voting.web.user;
 
-import com.voting.UserTestData;
 import com.voting.model.User;
 import com.voting.service.UserService;
 import com.voting.to.UserTo;

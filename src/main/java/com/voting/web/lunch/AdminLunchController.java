@@ -3,7 +3,6 @@ package com.voting.web.lunch;
 import com.voting.model.Dish;
 import com.voting.model.Lunch;
 import com.voting.web.dish.AdminDishController;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;

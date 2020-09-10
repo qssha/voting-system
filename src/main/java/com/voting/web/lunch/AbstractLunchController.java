@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static com.voting.util.ValidationUtil.assureIdConsistent;
 import static com.voting.util.ValidationUtil.checkNew;
 
 public abstract class AbstractLunchController {

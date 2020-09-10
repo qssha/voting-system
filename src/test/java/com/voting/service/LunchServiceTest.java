@@ -55,7 +55,7 @@ public class LunchServiceTest extends AbstractServiceTest {
 
     @Test
     void get() throws Exception {
-        Lunch lunch = lunchService.get(FIRST_RESTAURANT_ID,FIRST_LUNCH_ID);
+        Lunch lunch = lunchService.get(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID);
         LUNCH_MATCHER.assertMatch(lunch, FIRST_LUNCH);
     }
 
