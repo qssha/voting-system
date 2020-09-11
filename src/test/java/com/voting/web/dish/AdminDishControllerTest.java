@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.voting.DishTestData.*;
 import static com.voting.TestUtil.readFromJson;
+import static com.voting.util.exception.ErrorType.VALIDATION_ERROR;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -73,5 +74,26 @@ public class AdminDishControllerTest extends AbstractControllerTest {
         newDish.setId(newId);
         DISH_MATCHER.assertMatch(created, newDish);
         DISH_MATCHER.assertMatch(dishService.get(newId), newDish);
+    }
+
+    @Test
+    void createInvalid() throws Exception {
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(getNewInvalid())))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR));
+    }
+
+    @Test
+    void updateInvalid() throws Exception {
+        Dish updated = getUpdatedInvalid();
+        perform(MockMvcRequestBuilders.put(REST_URL + updated.getId())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(updated)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR));
     }
 }

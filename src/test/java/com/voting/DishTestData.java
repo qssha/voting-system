@@ -48,4 +48,14 @@ public class DishTestData {
         return Stream.of(FIRST_DISH, SECOND_DISH, THIRD_DISH, FOURTH_DISH, FIFTH_DISH, SIXTH_DISH, SEVENTH_DISH,
                 EIGHTH_DISH, NINTH_DISH).sorted(Comparator.comparing(Dish::getName)).collect(Collectors.toList());
     }
+
+    public static Dish getNewInvalid() {
+        return new Dish("", 100);
+    }
+
+    public static Dish getUpdatedInvalid() {
+        Dish dish = new Dish(FIFTH_DISH);
+        dish.setPrice(1);
+        return dish;
+    }
 }
