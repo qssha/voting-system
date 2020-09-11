@@ -23,6 +23,7 @@ import static com.voting.LunchTestData.*;
 import static com.voting.RestaurantTestData.FIRST_RESTAURANT_ID;
 import static com.voting.RestaurantTestData.SECOND_RESTAURANT_ID;
 import static com.voting.TestUtil.readFromJson;
+import static com.voting.util.exception.ErrorType.VALIDATION_ERROR;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -114,5 +115,16 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
                 + "/lunches/" + FIRST_LUNCH_ID + "/dish/" + FIRST_DISH_ID))
                 .andExpect(status().isNoContent());
         DISH_MATCHER.assertMatch(lunchService.get(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID).getDishes(), SECOND_DISH, THIRD_DISH);
+    }
+
+    @Test
+    void addDishWithLocationInvalid() throws Exception {
+        perform(MockMvcRequestBuilders.post(REST_URL + FIRST_RESTAURANT_ID
+                + "/lunches/" + FIRST_LUNCH_ID + "/dish")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(getNewInvalid())))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR));
     }
 }

@@ -38,4 +38,14 @@ public class RestaurantTestData {
         return new RestaurantTo(FIRST_RESTAURANT_ID, FIRST_RESTAURANT.getName(),
                 MenuUtil.dishToDishTo(List.of(FIRST_DISH, SECOND_DISH, THIRD_DISH)));
     }
+
+    public static Restaurant getNewInvalid() {
+        return new Restaurant("");
+    }
+
+    public static Restaurant getUpdatedInvalid() {
+        Restaurant updated = new Restaurant(FIRST_RESTAURANT);
+        updated.setName("");
+        return updated;
+    }
 }

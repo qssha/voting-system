@@ -54,7 +54,7 @@ public class DishTestData {
     }
 
     public static Dish getUpdatedInvalid() {
-        Dish dish = new Dish(FIFTH_DISH);
+        Dish dish = new Dish(FIRST_DISH);
         dish.setPrice(1);
         return dish;
     }

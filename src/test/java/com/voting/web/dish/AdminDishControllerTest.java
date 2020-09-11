@@ -88,10 +88,9 @@ public class AdminDishControllerTest extends AbstractControllerTest {
 
     @Test
     void updateInvalid() throws Exception {
-        Dish updated = getUpdatedInvalid();
-        perform(MockMvcRequestBuilders.put(REST_URL + updated.getId())
+        perform(MockMvcRequestBuilders.put(REST_URL + FIRST_DISH_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(getUpdatedInvalid())))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(errorType(VALIDATION_ERROR));

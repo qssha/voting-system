@@ -23,6 +23,10 @@ public class Restaurant extends AbstractBaseEntity {
     public Restaurant() {
     }
 
+    public Restaurant(@NotBlank @Size(min = 2, max = 100) String name) {
+        this.name = name;
+    }
+
     public Restaurant(Integer id, String name) {
         super(id);
         this.name = name;
