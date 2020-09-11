@@ -1,6 +1,7 @@
 package com.voting.web.user;
 
 import com.voting.UserTestData;
+import com.voting.model.Role;
 import com.voting.model.User;
 import com.voting.service.UserService;
 import com.voting.util.exception.NotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.voting.TestUtil.readFromJson;
 import static com.voting.UserTestData.*;
+import static com.voting.util.exception.ErrorType.VALIDATION_ERROR;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -83,5 +85,28 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(USER_MATCHER.contentJson(ADMIN, USER));
+    }
+
+    @Test
+    void createInvalid() throws Exception {
+        User expected = new User(null, null, "", "newPass", Role.USER, Role.ADMIN);
+        perform(MockMvcRequestBuilders.post(REST_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(expected)))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(VALIDATION_ERROR))
+                .andDo(print());
+    }
+
+    @Test
+    void updateInvalid() throws Exception {
+        User updated = new User(USER);
+        updated.setName("");
+        perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().isUnprocessableEntity())
+                .andDo(print())
+                .andExpect(errorType(VALIDATION_ERROR));
     }
 }
