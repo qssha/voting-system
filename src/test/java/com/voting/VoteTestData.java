@@ -29,4 +29,8 @@ public class VoteTestData {
     public static Vote getVoteForLunchThatNotExist() {
         return new Vote(ADMIN_ID, FIRST_RESTAURANT_ID);
     }
+
+    public static Vote getNewAdminVote() {
+        return new Vote(ADMIN_VOTE_ID, ADMIN_ID, FIRST_RESTAURANT_ID, LocalDate.parse("2020-08-31"));
+    }
 }
