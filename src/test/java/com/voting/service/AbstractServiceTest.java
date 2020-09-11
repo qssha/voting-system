@@ -11,8 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringJUnitConfig(locations = {
         "classpath:spring/spring-mvc.xml",
-        "classpath:spring/spring-db.xml",
-        "classpath:spring/spring-timemock.xml"
+        "classpath:spring/spring-db.xml"
 })
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ExtendWith(TimingExtension.class)
