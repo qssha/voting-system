@@ -1,7 +1,6 @@
 package com.voting.web;
 
 import com.voting.AuthorizedUser;
-import com.voting.model.AbstractBaseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

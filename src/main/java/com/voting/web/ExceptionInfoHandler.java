@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.Map;
 
 import static com.voting.util.exception.ErrorType.*;
@@ -58,7 +57,7 @@ public class ExceptionInfoHandler {
             String lowerCaseMsg = rootMsg.toLowerCase();
             for (Map.Entry<String, String> entry : CONSTRAINS_I18N_MAP.entrySet()) {
                 if (lowerCaseMsg.contains(entry.getKey())) {
-                    return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR,entry.getValue());
+                    return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, entry.getValue());
                 }
             }
         }
