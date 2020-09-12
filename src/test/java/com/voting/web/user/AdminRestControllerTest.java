@@ -62,7 +62,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
         User updated = UserTestData.getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated))
+                .content(UserTestData.jsonWithPassword(updated, USER.getPassword()))
                 .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isNoContent());
 
@@ -74,7 +74,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
         User newUser = UserTestData.getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newUser))
+                .content(UserTestData.jsonWithPassword(newUser, "newPass"))
                 .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isCreated());
 

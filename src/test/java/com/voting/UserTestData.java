@@ -2,6 +2,7 @@ package com.voting;
 
 import com.voting.model.Role;
 import com.voting.model.User;
+import com.voting.web.json.JsonUtil;
 
 import java.util.Collections;
 import java.util.Date;
@@ -27,5 +28,9 @@ public class UserTestData {
         updated.setName("UpdatedName");
         updated.setRoles(Collections.singletonList(Role.ADMIN));
         return updated;
+    }
+
+    public static String jsonWithPassword(User user, String password) {
+        return JsonUtil.writeAdditionProps(user, "password", password);
     }
 }
