@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import static com.voting.TestUtil.userHttpBasic;
 import static com.voting.UserTestData.*;
 import static com.voting.util.exception.ErrorType.VALIDATION_ERROR;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -25,7 +26,8 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(USER_MATCHER.contentJson(USER));
@@ -33,7 +35,8 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL))
+        perform(MockMvcRequestBuilders.delete(REST_URL)
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isNoContent());
         USER_MATCHER.assertMatch(userService.getAll(), ADMIN);
     }
@@ -42,7 +45,8 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     void update() throws Exception {
         UserTo updatedTo = new UserTo(null, "newName", "newemail@ya.ru", "newPassword");
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updatedTo)))
+                .content(JsonUtil.writeValue(updatedTo))
+                .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
@@ -54,9 +58,16 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
         UserTo updatedTo = new UserTo(null, null, "password", null);
         perform(MockMvcRequestBuilders.put(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updatedTo)))
+                .content(JsonUtil.writeValue(updatedTo))
+                .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(errorType(VALIDATION_ERROR));
+    }
+
+    @Test
+    void getUnAuth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL))
+                .andExpect(status().isUnauthorized());
     }
 }

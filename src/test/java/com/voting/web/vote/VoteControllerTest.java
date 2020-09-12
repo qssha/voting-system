@@ -14,8 +14,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static com.voting.RestaurantTestData.*;
-import static com.voting.UserTestData.ADMIN_ID;
-import static com.voting.UserTestData.USER_ID;
+import static com.voting.TestUtil.userHttpBasic;
+import static com.voting.UserTestData.*;
 import static com.voting.VoteTestData.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -32,7 +32,8 @@ public class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     void getRestaurants() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "restaurants"))
+        perform(MockMvcRequestBuilders.get(REST_URL + "restaurants")
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -41,7 +42,8 @@ public class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     void getVotes() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "votes"))
+        perform(MockMvcRequestBuilders.get(REST_URL + "votes")
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -50,11 +52,20 @@ public class VoteControllerTest extends AbstractControllerTest {
 
     @Test
     void vote() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "vote/" + FIRST_RESTAURANT_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL + "vote/" + FIRST_RESTAURANT_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        // Security auth needed for check
-        //Vote vote = userService.getVote(ADMIN_ID, LocalDate.now(clock));
-        //VOTE_MATCHER.assertMatch(vote, getNewAdminVote());
+
+        Vote vote = userService.getVote(ADMIN_ID, LocalDate.now(clock));
+        Vote newAdminVote = getNewAdminVote();
+        newAdminVote.setId(vote.getId());
+        VOTE_MATCHER.assertMatch(vote, newAdminVote);
+    }
+
+    @Test
+    void getUnAuth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "restaurants"))
+                .andExpect(status().isUnauthorized());
     }
 }

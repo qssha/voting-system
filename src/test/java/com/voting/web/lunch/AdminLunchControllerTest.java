@@ -23,6 +23,9 @@ import static com.voting.LunchTestData.*;
 import static com.voting.RestaurantTestData.FIRST_RESTAURANT_ID;
 import static com.voting.RestaurantTestData.SECOND_RESTAURANT_ID;
 import static com.voting.TestUtil.readFromJson;
+import static com.voting.TestUtil.userHttpBasic;
+import static com.voting.UserTestData.ADMIN;
+import static com.voting.UserTestData.USER;
 import static com.voting.util.exception.ErrorType.VALIDATION_ERROR;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -40,7 +43,8 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + FIRST_RESTAURANT_ID + "/lunches/" + FIRST_LUNCH_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL + FIRST_RESTAURANT_ID + "/lunches/" + FIRST_LUNCH_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -49,7 +53,8 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
 
     @Test
     void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "lunches"))
+        perform(MockMvcRequestBuilders.get(REST_URL + "lunches")
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -58,7 +63,8 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
 
     @Test
     void getForRestaurant() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + FIRST_RESTAURANT_ID + "/lunches"))
+        perform(MockMvcRequestBuilders.get(REST_URL + FIRST_RESTAURANT_ID + "/lunches")
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -67,7 +73,8 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
 
     @Test
     void createWithLocation() throws Exception {
-        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + SECOND_RESTAURANT_ID + "/lunches"))
+        ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + SECOND_RESTAURANT_ID + "/lunches")
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isCreated());
         Lunch created = readFromJson(action, Lunch.class);
         Assertions.assertEquals(LocalDate.of(2020, 8, 30), created.getLunchDate());
@@ -76,7 +83,8 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + FIRST_RESTAURANT_ID + "/lunches/" + FIRST_LUNCH_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + FIRST_RESTAURANT_ID + "/lunches/" + FIRST_LUNCH_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertThrows(NotFoundException.class, () -> lunchService.get(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID));
@@ -85,7 +93,8 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
     @Test
     void addDishById() throws Exception {
         perform(MockMvcRequestBuilders.put(REST_URL + FIRST_RESTAURANT_ID
-                + "/lunches/" + FIRST_LUNCH_ID + "/dish/" + FOURTH_DISH_ID))
+                + "/lunches/" + FIRST_LUNCH_ID + "/dish/" + FOURTH_DISH_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isNoContent());
         DISH_MATCHER.assertMatch(lunchService.get(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID).getDishes(),
                 FIRST_DISH, SECOND_DISH, THIRD_DISH, FOURTH_DISH);
@@ -97,7 +106,8 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL + FIRST_RESTAURANT_ID
                 + "/lunches/" + FIRST_LUNCH_ID + "/dish")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newDish)))
+                .content(JsonUtil.writeValue(newDish))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isCreated());
 
         Dish created = readFromJson(action, Dish.class);
@@ -112,7 +122,8 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
     @Test
     void deleteDishById() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL + FIRST_RESTAURANT_ID
-                + "/lunches/" + FIRST_LUNCH_ID + "/dish/" + FIRST_DISH_ID))
+                + "/lunches/" + FIRST_LUNCH_ID + "/dish/" + FIRST_DISH_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isNoContent());
         DISH_MATCHER.assertMatch(lunchService.get(FIRST_RESTAURANT_ID, FIRST_LUNCH_ID).getDishes(), SECOND_DISH, THIRD_DISH);
     }
@@ -122,9 +133,23 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.post(REST_URL + FIRST_RESTAURANT_ID
                 + "/lunches/" + FIRST_LUNCH_ID + "/dish")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(getNewInvalid())))
+                .content(JsonUtil.writeValue(getNewInvalid()))
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(errorType(VALIDATION_ERROR));
+    }
+
+    @Test
+    void getUnAuth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "lunches"))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "lunches")
+                .with(userHttpBasic(USER)))
+                .andExpect(status().isForbidden());
     }
 }

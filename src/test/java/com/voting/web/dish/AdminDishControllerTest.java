@@ -13,6 +13,9 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.voting.DishTestData.*;
 import static com.voting.TestUtil.readFromJson;
+import static com.voting.TestUtil.userHttpBasic;
+import static com.voting.UserTestData.ADMIN;
+import static com.voting.UserTestData.USER;
 import static com.voting.util.exception.ErrorType.VALIDATION_ERROR;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,7 +30,8 @@ public class AdminDishControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + FIRST_DISH_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL + FIRST_DISH_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -36,7 +40,8 @@ public class AdminDishControllerTest extends AbstractControllerTest {
 
     @Test
     void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -45,7 +50,8 @@ public class AdminDishControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + FIRST_DISH_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + FIRST_DISH_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         assertThrows(NotFoundException.class, () -> dishService.get(FIRST_DISH_ID));
@@ -56,7 +62,8 @@ public class AdminDishControllerTest extends AbstractControllerTest {
         Dish updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + FIRST_DISH_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(updated))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isNoContent());
         DISH_MATCHER.assertMatch(dishService.get(FIRST_DISH_ID), updated);
     }
@@ -66,7 +73,8 @@ public class AdminDishControllerTest extends AbstractControllerTest {
         Dish newDish = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newDish)))
+                .content(JsonUtil.writeValue(newDish))
+                .with(userHttpBasic(ADMIN)))
                 .andExpect(status().isCreated());
 
         Dish created = readFromJson(action, Dish.class);
@@ -80,7 +88,8 @@ public class AdminDishControllerTest extends AbstractControllerTest {
     void createInvalid() throws Exception {
         perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(getNewInvalid())))
+                .content(JsonUtil.writeValue(getNewInvalid()))
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(errorType(VALIDATION_ERROR));
@@ -90,9 +99,23 @@ public class AdminDishControllerTest extends AbstractControllerTest {
     void updateInvalid() throws Exception {
         perform(MockMvcRequestBuilders.put(REST_URL + FIRST_DISH_ID)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(getUpdatedInvalid())))
+                .content(JsonUtil.writeValue(getUpdatedInvalid()))
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(errorType(VALIDATION_ERROR));
+    }
+
+    @Test
+    void getUnAuth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(USER)))
+                .andExpect(status().isForbidden());
     }
 }
