@@ -31,7 +31,7 @@ public class ExceptionInfoHandler {
     public static final String EXCEPTION_DUPLICATE_EMAIL = "User with this email already exists";
     public static final String EXCEPTION_DUPLICATE_LUNCH = "Lunch for this restaurant and date already exist";
 
-    private static final Map<String, String> CONSTRAINS_I18N_MAP = Map.of(
+    private static final Map<String, String> CONSTRAINS_MAP = Map.of(
             "users_unique_email_idx", EXCEPTION_DUPLICATE_EMAIL,
             "lunches_unique_restaurant_lunch_date_idx", EXCEPTION_DUPLICATE_LUNCH);
 
@@ -55,7 +55,7 @@ public class ExceptionInfoHandler {
 
         if (rootMsg != null) {
             String lowerCaseMsg = rootMsg.toLowerCase();
-            for (Map.Entry<String, String> entry : CONSTRAINS_I18N_MAP.entrySet()) {
+            for (Map.Entry<String, String> entry : CONSTRAINS_MAP.entrySet()) {
                 if (lowerCaseMsg.contains(entry.getKey())) {
                     return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, entry.getValue());
                 }
