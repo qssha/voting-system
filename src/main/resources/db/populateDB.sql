@@ -43,8 +43,8 @@ VALUES (100006, 100003),
        (100014, 100005);
 
 INSERT INTO USERS (name, email, password)
-VALUES ('User', 'user@yandex.ru', 'password'),
-       ('Admin', 'admin@gmail.com', 'admin');
+VALUES ('User', 'user@yandex.ru', '{noop}password'),
+       ('Admin', 'admin@gmail.com', '{noop}admin');
 
 INSERT INTO USER_ROLES (role, user_id)
 VALUES ('USER', 100015),

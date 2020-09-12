@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -26,6 +27,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import static com.voting.util.UserUtil.prepareToSave;
 import static com.voting.util.ValidationUtil.checkNotFound;
 import static com.voting.util.ValidationUtil.checkNotFoundWithId;
 
@@ -36,17 +38,19 @@ public class UserService implements UserDetailsService {
     private final UserCrudRepository userCrudRepository;
     private final VoteCrudRepository voteCrudRepository;
     private final LunchService lunchService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserCrudRepository userCrudRepository, VoteCrudRepository voteCrudRepository, LunchService lunchService) {
+    public UserService(UserCrudRepository userCrudRepository, VoteCrudRepository voteCrudRepository, LunchService lunchService, PasswordEncoder passwordEncoder) {
         this.userCrudRepository = userCrudRepository;
         this.voteCrudRepository = voteCrudRepository;
         this.lunchService = lunchService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @CacheEvict(value = "users", allEntries = true)
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
-        return userCrudRepository.save(user);
+        return prepareAndSave(user);
     }
 
     @CacheEvict(value = "users", allEntries = true)
@@ -66,7 +70,7 @@ public class UserService implements UserDetailsService {
     @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
-        checkNotFoundWithId(userCrudRepository.save(user), user.getId());
+        checkNotFoundWithId(prepareAndSave(user), user.getId());
     }
 
     public User getByEmail(String email) {
@@ -124,5 +128,9 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User " + email + " is not found");
         }
         return new AuthorizedUser(user);
+    }
+
+    private User prepareAndSave(User user) {
+        return userCrudRepository.save(prepareToSave(user, passwordEncoder));
     }
 }
