@@ -16,8 +16,7 @@ import java.util.List;
 import static com.voting.RestaurantTestData.*;
 import static com.voting.TestUtil.userHttpBasic;
 import static com.voting.UserTestData.*;
-import static com.voting.VoteTestData.VOTE_MATCHER;
-import static com.voting.VoteTestData.getNewAdminVote;
+import static com.voting.VoteTestData.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -48,7 +47,7 @@ public class VoteControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_MATCHER.contentJson(List.of(VoteTestData.USER_VOTE)));
+                .andExpect(VOTE_TO_MATCHER.contentJson(List.of(VoteTestData.USER_VOTE_TO)));
     }
 
     @Test

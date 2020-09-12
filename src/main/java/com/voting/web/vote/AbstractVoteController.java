@@ -4,6 +4,7 @@ import com.voting.model.Vote;
 import com.voting.service.LunchService;
 import com.voting.service.UserService;
 import com.voting.to.RestaurantTo;
+import com.voting.to.VoteTo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +32,8 @@ public abstract class AbstractVoteController {
         return lunchService.getAllWithLunchForDate(date);
     }
 
-    public List<Vote> getAllVotes(int id) {
+    public List<VoteTo> getAllVotes(int id) {
         log.info("get votes for user {}", id);
-        return userService.getAllVotes(id);
+        return userService.getAllVoteTos(id);
     }
 }

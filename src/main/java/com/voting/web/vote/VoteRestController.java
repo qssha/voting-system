@@ -1,7 +1,7 @@
 package com.voting.web.vote;
 
-import com.voting.model.Vote;
 import com.voting.to.RestaurantTo;
+import com.voting.to.VoteTo;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +32,7 @@ public class VoteRestController extends AbstractVoteController {
     }
 
     @GetMapping("/votes")
-    public List<Vote> getVotes() {
+    public List<VoteTo> getVotes() {
         return super.getAllVotes(authUserId());
     }
 

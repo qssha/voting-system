@@ -6,7 +6,9 @@ import com.voting.model.Vote;
 import com.voting.repository.UserCrudRepository;
 import com.voting.repository.VoteCrudRepository;
 import com.voting.to.UserTo;
+import com.voting.to.VoteTo;
 import com.voting.util.UserUtil;
+import com.voting.util.VoteUtil;
 import com.voting.util.exception.NotFoundException;
 import com.voting.util.exception.VoteException;
 import org.springframework.cache.annotation.CacheEvict;
@@ -132,5 +134,9 @@ public class UserService implements UserDetailsService {
 
     private User prepareAndSave(User user) {
         return userCrudRepository.save(prepareToSave(user, passwordEncoder));
+    }
+
+    public List<VoteTo> getAllVoteTos(int id) {
+        return VoteUtil.votesToVoteTos(getAllVotes(id));
     }
 }
