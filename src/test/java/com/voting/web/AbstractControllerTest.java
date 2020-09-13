@@ -49,6 +49,10 @@ public abstract class AbstractControllerTest {
         return jsonPath("$.type").value(type.name());
     }
 
+    public ResultMatcher detailMessage(String code) {
+        return jsonPath("$.details").value(code);
+    }
+
     public ResultActions perform(MockHttpServletRequestBuilder builder) throws Exception {
         return mockMvc.perform(builder);
     }

@@ -1,6 +1,7 @@
 package com.voting.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.voting.HasIdAndEmail;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -19,7 +20,7 @@ import java.util.Set;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Entity
 @Table(name = "users")
-public class User extends AbstractBaseEntity {
+public class User extends AbstractBaseEntity implements HasIdAndEmail {
 
     @Column(name = "name", nullable = false)
     @NotBlank

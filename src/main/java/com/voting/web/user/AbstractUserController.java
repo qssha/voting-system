@@ -3,9 +3,12 @@ package com.voting.web.user;
 import com.voting.model.User;
 import com.voting.service.UserService;
 import com.voting.to.UserTo;
+import com.voting.web.UniqueMailValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import java.util.List;
 
@@ -17,6 +20,14 @@ public abstract class AbstractUserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private UniqueMailValidator emailValidator;
+
+    @InitBinder
+    protected void initBinder(WebDataBinder binder) {
+        binder.addValidators(emailValidator);
+    }
 
     public List<User> getAll() {
         log.info("getAll");
