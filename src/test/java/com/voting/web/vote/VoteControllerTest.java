@@ -1,5 +1,6 @@
 package com.voting.web.vote;
 
+import com.voting.RestaurantTestData;
 import com.voting.TimeClockMock;
 import com.voting.VoteTestData;
 import com.voting.model.Vote;
@@ -83,5 +84,14 @@ public class VoteControllerTest extends AbstractControllerTest {
     void getUnAuth() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "restaurants"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void voteNotFound() throws Exception {
+        clock.setCurrentTime(VOTE_DATETIME);
+        perform(MockMvcRequestBuilders.get(REST_URL + "vote/" + RestaurantTestData.NOT_FOUND)
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }

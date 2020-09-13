@@ -118,4 +118,12 @@ public class AdminRestaurantControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(USER)))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    void getNotFound() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + NOT_FOUND)
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
 }

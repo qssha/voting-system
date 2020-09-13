@@ -1,6 +1,7 @@
 package com.voting.web.lunch;
 
 import com.voting.DishTestData;
+import com.voting.LunchTestData;
 import com.voting.model.Dish;
 import com.voting.model.Lunch;
 import com.voting.service.DishService;
@@ -151,5 +152,14 @@ public class AdminLunchControllerTest extends AbstractControllerTest {
         perform(MockMvcRequestBuilders.get(REST_URL + "lunches")
                 .with(userHttpBasic(USER)))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void getNotFound() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + FIRST_RESTAURANT_ID
+                + "/lunches/" + LunchTestData.NOT_FOUND)
+                .with(userHttpBasic(ADMIN)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 }
