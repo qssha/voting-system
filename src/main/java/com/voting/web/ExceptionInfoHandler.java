@@ -66,7 +66,7 @@ public class ExceptionInfoHandler {
 
         String[] details = result.getFieldErrors()
                 .stream()
-                .map(x -> x.getField() + " " + x.getDefaultMessage())
+                .map(x -> x.getField().equals("email") ? EXCEPTION_DUPLICATE_EMAIL : x.getField() + " " + x.getDefaultMessage())
                 .toArray(String[]::new);
 
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, details);
