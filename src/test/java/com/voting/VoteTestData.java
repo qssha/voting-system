@@ -22,6 +22,11 @@ public class VoteTestData {
 
     public static final VoteTo USER_VOTE_TO = new VoteTo(USER_VOTE.getId(), USER_VOTE.getRestaurantFK(), USER_VOTE.getVoteDate());
 
+    public static final String VOTE_DATETIME = "2020-08-30T10:00:00.00Z";
+    public static final String VOTE_FAILED_DATETIME = "2020-08-30T12:00:00.00Z";
+
+    public static final String VOTE_FAILED_MESSAGE = "Can not vote after 11:00";
+
     public static Vote getNew() {
         return new Vote(USER_ID, THIRD_RESTAURANT_ID, LocalDate.parse("2020-08-31"));
     }

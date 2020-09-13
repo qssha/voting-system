@@ -5,6 +5,8 @@ import java.time.Instant;
 import java.time.ZoneId;
 
 public class TimeClockMock extends Clock {
+    private String currentTime = "2020-08-30T10:00:00.00Z";
+
     @Override
     public ZoneId getZone() {
         return ZoneId.of("UTC");
@@ -17,6 +19,14 @@ public class TimeClockMock extends Clock {
 
     @Override
     public Instant instant() {
-        return Instant.parse("2020-08-30T10:00:00.00Z");
+        return Instant.parse(currentTime);
+    }
+
+    public String getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(String currentTime) {
+        this.currentTime = currentTime;
     }
 }
