@@ -38,7 +38,7 @@ public class ExceptionInfoHandler {
     @ExceptionHandler(ApplicationException.class)
     public ResponseEntity<ErrorInfo> applicationError(HttpServletRequest req, ApplicationException appEx) {
         ErrorInfo errorInfo = logAndGetErrorInfo(req, appEx, false, appEx.getType(),
-                appEx.getMsgCode());
+                appEx.getMessage());
         return ResponseEntity.status(appEx.getType().getStatus()).body(errorInfo);
     }
 
@@ -66,7 +66,7 @@ public class ExceptionInfoHandler {
 
         String[] details = result.getFieldErrors()
                 .stream()
-                .map(DefaultMessageSourceResolvable::getCode)
+                .map(x -> x.getField() + " " + x.getDefaultMessage())
                 .toArray(String[]::new);
 
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, details);
