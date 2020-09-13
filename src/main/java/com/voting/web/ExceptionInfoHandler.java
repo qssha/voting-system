@@ -1,10 +1,7 @@
 package com.voting.web;
 
 import com.voting.util.ValidationUtil;
-import com.voting.util.exception.ErrorInfo;
-import com.voting.util.exception.ErrorType;
-import com.voting.util.exception.NotFoundException;
-import com.voting.util.exception.VoteException;
+import com.voting.util.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -12,6 +9,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,17 +35,11 @@ public class ExceptionInfoHandler {
             "users_unique_email_idx", EXCEPTION_DUPLICATE_EMAIL,
             "lunches_unique_restaurant_lunch_date_idx", EXCEPTION_DUPLICATE_LUNCH);
 
-    //  http://stackoverflow.com/a/22358422/548473
-    @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)
-    @ExceptionHandler({NotFoundException.class})
-    public ErrorInfo handleError(HttpServletRequest req, NotFoundException e) {
-        return logAndGetErrorInfo(req, e, false, DATA_NOT_FOUND);
-    }
-
-    @ResponseStatus(value = HttpStatus.CONFLICT)
-    @ExceptionHandler({VoteException.class})
-    public ErrorInfo handleError(HttpServletRequest req, VoteException e) {
-        return logAndGetErrorInfo(req, e, false, VOTE_ERROR);
+    @ExceptionHandler(ApplicationException.class)
+    public ResponseEntity<ErrorInfo> applicationError(HttpServletRequest req, ApplicationException appEx) {
+        ErrorInfo errorInfo = logAndGetErrorInfo(req, appEx, false, appEx.getType(),
+                appEx.getMsgCode());
+        return ResponseEntity.status(appEx.getType().getStatus()).body(errorInfo);
     }
 
     @ResponseStatus(value = HttpStatus.CONFLICT)  // 409

@@ -1,7 +1,7 @@
 package com.voting.util.exception;
 
-public class VoteException extends RuntimeException {
+public class VoteException extends ApplicationException {
     public VoteException(String message) {
-        super(message);
+        super(ErrorType.VOTE_ERROR,message);
     }
 }
