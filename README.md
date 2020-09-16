@@ -41,4 +41,4 @@
 `curl -v --user user@yandex.ru:password localhost:8080/voting-system/rest/voting/votes`
 
 #### Vote for restaurant 100000
-`curl -v --user user@yandex.ru:password localhost:8080/voting-system/rest/voting/votes/100000`
+`curl -v --user user@yandex.ru:password localhost:8080/voting-system/rest/voting/vote/100000`
