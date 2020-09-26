@@ -1,8 +1,6 @@
 package com.voting.web.vote;
 
 import com.voting.model.Vote;
-import com.voting.service.LunchService;
-import com.voting.service.UserService;
 import com.voting.service.VoteService;
 import com.voting.to.RestaurantTo;
 import com.voting.to.VoteTo;

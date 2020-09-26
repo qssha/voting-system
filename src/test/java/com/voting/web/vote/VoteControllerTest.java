@@ -4,7 +4,6 @@ import com.voting.RestaurantTestData;
 import com.voting.TimeClockMock;
 import com.voting.VoteTestData;
 import com.voting.model.Vote;
-import com.voting.service.UserService;
 import com.voting.service.VoteService;
 import com.voting.web.AbstractControllerTest;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import java.time.Clock;
 import java.time.LocalDate;
 import java.util.List;
 

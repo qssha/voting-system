@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static com.voting.UserTestData.*;
+import static com.voting.UserTestData.ADMIN_ID;
+import static com.voting.UserTestData.USER_ID;
 import static com.voting.VoteTestData.*;
-import static com.voting.VoteTestData.NOT_FOUND;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class VoteServiceTest extends AbstractServiceTest {

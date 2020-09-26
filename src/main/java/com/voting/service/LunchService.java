@@ -3,8 +3,6 @@ package com.voting.service;
 import com.voting.model.Dish;
 import com.voting.model.Lunch;
 import com.voting.repository.LunchCrudRepository;
-import com.voting.to.RestaurantTo;
-import com.voting.util.MenuUtil;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Sort;
