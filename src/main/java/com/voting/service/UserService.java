@@ -50,13 +50,11 @@ public class UserService implements UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @CacheEvict(value = "users", allEntries = true)
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         return prepareAndSave(user);
     }
 
-    @CacheEvict(value = "users", allEntries = true)
     public void delete(int id) {
         checkNotFoundWithId(userCrudRepository.delete(id) != 0, id);
     }
@@ -65,12 +63,10 @@ public class UserService implements UserDetailsService {
         return checkNotFoundWithId(userCrudRepository.findById(id).orElse(null), id);
     }
 
-    @Cacheable(value = "users")
     public List<User> getAll() {
         return userCrudRepository.findAll(Sort.by(Sort.Direction.ASC, "name", "email"));
     }
 
-    @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
         checkNotFoundWithId(prepareAndSave(user), user.getId());
@@ -118,7 +114,6 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    @CacheEvict(value = "users", allEntries = true)
     public void update(UserTo userTo) {
         User user = get(userTo.getId());
         UserUtil.updateFromTo(user, userTo);
