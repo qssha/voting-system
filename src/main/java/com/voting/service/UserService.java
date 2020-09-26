@@ -92,16 +92,15 @@ public class UserService implements UserDetailsService {
                     + " does not offer lunch for date=" + voteDateTime.toLocalDate().toString());
         }
 
-        if (voteDateTime.toLocalTime().isAfter(endOfVoteTime)) {
-            throw new VoteException("Can not vote after " + endOfVoteTime.toString());
-        } else {
-            Vote prevVote = voteCrudRepository.getByUserFKAndVoteDate(vote.getUserFK(), voteDateTime.toLocalDate());
-            if (prevVote != null) {
-                vote.setId(prevVote.getId());
+        Vote prevVote = voteCrudRepository.getByUserFKAndVoteDate(vote.getUserFK(), voteDateTime.toLocalDate());
+        if (prevVote != null) {
+            if (voteDateTime.toLocalTime().isAfter(endOfVoteTime)) {
+                throw new VoteException("Can not vote after " + endOfVoteTime.toString());
             }
-            vote.setVoteDate(voteDateTime.toLocalDate());
-            voteCrudRepository.save(vote);
+            vote.setId(prevVote.getId());
         }
+        vote.setVoteDate(voteDateTime.toLocalDate());
+        voteCrudRepository.save(vote);
     }
 
     public Vote getVote(int id, LocalDate date) {

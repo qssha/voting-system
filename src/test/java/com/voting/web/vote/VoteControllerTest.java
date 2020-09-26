@@ -73,7 +73,7 @@ public class VoteControllerTest extends AbstractControllerTest {
     void voteFailed() throws Exception {
         clock.setCurrentTime(VOTE_FAILED_DATETIME);
         perform(MockMvcRequestBuilders.get(REST_URL + "vote/" + FIRST_RESTAURANT_ID)
-                .with(userHttpBasic(ADMIN)))
+                .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isConflict())
                 .andExpect(errorType(VOTE_ERROR))
