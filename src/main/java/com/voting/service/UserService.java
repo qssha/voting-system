@@ -36,7 +36,6 @@ import static com.voting.util.ValidationUtil.checkNotFoundWithId;
 @Service("userService")
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
-    private static final LocalTime lunchTime = LocalTime.of(11, 0, 0);
 
     private final UserCrudRepository userCrudRepository;
     private final VoteCrudRepository voteCrudRepository;
@@ -78,42 +77,6 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public void vote(Vote vote, LocalDateTime voteDateTime) {
-        voteWithEndTime(vote, voteDateTime, lunchTime);
-    }
-
-    @Transactional
-    public void voteWithEndTime(Vote vote, LocalDateTime voteDateTime, LocalTime endOfVoteTime) {
-        //checking lunch for this date by restaurant id, lunches will be cached
-        if (!checkLunchForDate(vote.getRestaurantFK(), voteDateTime.toLocalDate())) {
-            throw new NotFoundException("Restaurant with id=" + vote.getRestaurantFK()
-                    + " does not offer lunch for date=" + voteDateTime.toLocalDate().toString());
-        }
-
-        Vote prevVote = voteCrudRepository.getByUserFKAndVoteDate(vote.getUserFK(), voteDateTime.toLocalDate());
-        if (prevVote != null) {
-            if (voteDateTime.toLocalTime().isAfter(endOfVoteTime)) {
-                throw new VoteException("Can not vote after " + endOfVoteTime.toString());
-            }
-            vote.setId(prevVote.getId());
-        }
-        vote.setVoteDate(voteDateTime.toLocalDate());
-        voteCrudRepository.save(vote);
-    }
-
-    public Vote getVote(int id, LocalDate date) {
-        return checkNotFoundWithId(voteCrudRepository.getByUserFKAndVoteDate(id, date), id);
-    }
-
-    public List<Vote> getAllVotes(int id) {
-        return voteCrudRepository.getAllByUserFK(id);
-    }
-
-    public boolean checkLunchForDate(int restaurantId, LocalDate date) {
-        return lunchService.getByDate(date).stream().anyMatch(x -> x.getRestaurant().getId() == restaurantId);
-    }
-
-    @Transactional
     public void update(UserTo userTo) {
         User user = get(userTo.getId());
         UserUtil.updateFromTo(user, userTo);
@@ -130,9 +93,5 @@ public class UserService implements UserDetailsService {
 
     private User prepareAndSave(User user) {
         return userCrudRepository.save(prepareToSave(user, passwordEncoder));
-    }
-
-    public List<VoteTo> getAllVoteTos(int id) {
-        return VoteUtil.votesToVoteTos(getAllVotes(id));
     }
 }

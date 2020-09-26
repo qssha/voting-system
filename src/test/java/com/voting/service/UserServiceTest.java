@@ -85,54 +85,6 @@ public class UserServiceTest extends AbstractServiceTest {
     }
 
     @Test
-    void getVoteByIdAndName() throws Exception {
-        VOTE_MATCHER.assertMatch(userService.getVote(USER_ID, LocalDate.of(2020, 8, 30)),
-                USER_VOTE);
-    }
-
-    @Test
-    void getVoteNotFound() throws Exception {
-        assertThrows(NotFoundException.class, () -> userService.getVote(NOT_FOUND, LocalDate.of(2020, 8, 30)));
-    }
-
-    @Test
-    void getAllVotesForDate() throws Exception {
-        VOTE_MATCHER.assertMatch(userService.getAllVotes(USER_ID), USER_VOTE);
-    }
-
-    @Test
-    void vote() throws Exception {
-        LocalDateTime voteTime = LocalDateTime.of(2020, 8, 31, 10, 0, 0);
-        Vote created = VoteTestData.getNew();
-        userService.vote(created, voteTime);
-        Vote newVote = userService.getVote(USER_ID, voteTime.toLocalDate());
-        created.setId(newVote.getId());
-        VOTE_MATCHER.assertMatch(newVote, created);
-    }
-
-    @Test
-    void reVote() throws Exception {
-        LocalDateTime voteTime = LocalDateTime.of(2020, 8, 31, 10, 0, 0);
-        Vote createdForReVote = VoteTestData.getNewForReVote();
-        userService.vote(createdForReVote, voteTime);
-        Vote updatedVote = userService.getVote(ADMIN_ID, voteTime.toLocalDate());
-        createdForReVote.setId(updatedVote.getId());
-        VOTE_MATCHER.assertMatch(updatedVote, createdForReVote);
-    }
-
-    @Test
-    void voteTimeExpired() throws Exception {
-        assertThrows(VoteException.class, () -> userService.vote(getNewForReVote(),
-                LocalDateTime.of(2020, 8, 31, 12, 0, 0)));
-    }
-
-    @Test
-    void voteNoLunch() throws Exception {
-        assertThrows(NotFoundException.class, () -> userService.vote(VoteTestData.getVoteForLunchThatNotExist(),
-                LocalDateTime.of(2020, 8, 31, 10, 0, 0)));
-    }
-
-    @Test
     void createWithException() throws Exception {
         validateRootCause(() -> userService.create(new User(null, "", "mail@yandex.ru",
                 "password", Role.USER)), ConstraintViolationException.class);
@@ -145,11 +97,5 @@ public class UserServiceTest extends AbstractServiceTest {
         ;
         validateRootCause(() -> userService.create(new User(null, "User", "mail.ru",
                 "password", Role.USER)), ConstraintViolationException.class);
-    }
-
-    @Test
-    void checkLunchForDate() throws Exception {
-        assertTrue(userService.checkLunchForDate(100000, LocalDate.of(2020, 8, 30)));
-        assertFalse(userService.checkLunchForDate(100000, LocalDate.of(2020, 8, 31)));
     }
 }

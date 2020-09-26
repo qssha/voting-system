@@ -109,8 +109,4 @@ public class LunchService {
         addDishById(restaurantId, id, newDish.getId());
         return newDish;
     }
-
-    public List<RestaurantTo> getAllWithLunchForDate(LocalDate date) {
-        return MenuUtil.LunchToRestaurantTo(getByDate(date));
-    }
 }

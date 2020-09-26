@@ -5,6 +5,7 @@ import com.voting.TimeClockMock;
 import com.voting.VoteTestData;
 import com.voting.model.Vote;
 import com.voting.service.UserService;
+import com.voting.service.VoteService;
 import com.voting.web.AbstractControllerTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class VoteControllerTest extends AbstractControllerTest {
     private TimeClockMock clock;
 
     @Autowired
-    private UserService userService;
+    private VoteService voteService;
 
     @Test
     void getRestaurants() throws Exception {
@@ -63,7 +64,7 @@ public class VoteControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        Vote vote = userService.getVote(ADMIN_ID, LocalDate.now(clock));
+        Vote vote = voteService.getVote(ADMIN_ID, LocalDate.now(clock));
         Vote newAdminVote = getNewAdminVote();
         newAdminVote.setId(vote.getId());
         VOTE_MATCHER.assertMatch(vote, newAdminVote);
