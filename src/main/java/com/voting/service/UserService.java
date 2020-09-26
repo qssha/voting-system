@@ -36,6 +36,7 @@ import static com.voting.util.ValidationUtil.checkNotFoundWithId;
 @Service("userService")
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserService implements UserDetailsService {
+    private static final LocalTime lunchTime = LocalTime.of(11, 0, 0);
 
     private final UserCrudRepository userCrudRepository;
     private final VoteCrudRepository voteCrudRepository;
@@ -80,8 +81,9 @@ public class UserService implements UserDetailsService {
         return checkNotFound(userCrudRepository.getByEmail(email), "email=" + email);
     }
 
+    @Transactional
     public void vote(Vote vote, LocalDateTime voteDateTime) {
-        voteWithEndTime(vote, voteDateTime, LocalTime.of(11, 0, 0));
+        voteWithEndTime(vote, voteDateTime, lunchTime);
     }
 
     @Transactional
