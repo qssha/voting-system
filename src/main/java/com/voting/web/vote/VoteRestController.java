@@ -25,7 +25,7 @@ public class VoteRestController extends AbstractVoteController {
         this.clock = clock;
     }
 
-    @GetMapping("/vote/{restaurantId}")
+    @PostMapping("/vote/{restaurantId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void vote(@PathVariable int restaurantId) {
         super.vote(authUserId(), restaurantId, LocalDateTime.now(clock));

@@ -57,7 +57,7 @@ public class VoteControllerTest extends AbstractControllerTest {
     @Test
     void vote() throws Exception {
         clock.setCurrentTime(VOTE_DATETIME);
-        perform(MockMvcRequestBuilders.get(REST_URL + "vote/" + FIRST_RESTAURANT_ID)
+        perform(MockMvcRequestBuilders.post(REST_URL + "vote/" + FIRST_RESTAURANT_ID)
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -71,7 +71,7 @@ public class VoteControllerTest extends AbstractControllerTest {
     @Test
     void voteFailed() throws Exception {
         clock.setCurrentTime(VOTE_FAILED_DATETIME);
-        perform(MockMvcRequestBuilders.get(REST_URL + "vote/" + FIRST_RESTAURANT_ID)
+        perform(MockMvcRequestBuilders.post(REST_URL + "vote/" + FIRST_RESTAURANT_ID)
                 .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isConflict())
@@ -88,7 +88,7 @@ public class VoteControllerTest extends AbstractControllerTest {
     @Test
     void voteNotFound() throws Exception {
         clock.setCurrentTime(VOTE_DATETIME);
-        perform(MockMvcRequestBuilders.get(REST_URL + "vote/" + RestaurantTestData.NOT_FOUND)
+        perform(MockMvcRequestBuilders.post(REST_URL + "vote/" + RestaurantTestData.NOT_FOUND)
                 .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
